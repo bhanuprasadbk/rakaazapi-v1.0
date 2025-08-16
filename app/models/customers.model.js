@@ -25,6 +25,7 @@ module.exports = {
            OR co.name LIKE ?
            OR s.name LIKE ?
            OR ci.name LIKE ?
+           AND c.is_deleted = 0
     `;
 
         const searchParams = Array(10).fill(`%${search}%`); // 10 LIKE placeholders
@@ -40,7 +41,7 @@ module.exports = {
         LEFT JOIN tbl_countries co ON c.country_id = co.id
         LEFT JOIN tbl_states s ON c.state_id = s.id
         LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-        ${search ? searchCondition : ''}
+        ${search ? searchCondition : 'WHERE c.is_deleted = 0'}
         ORDER BY c.organization_name
         LIMIT ? OFFSET ?`;
 
@@ -57,7 +58,7 @@ module.exports = {
             LEFT JOIN tbl_countries co ON c.country_id = co.id
             LEFT JOIN tbl_states s ON c.state_id = s.id
             LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-            ${search ? searchCondition : ''}
+            ${search ? searchCondition : 'WHERE c.is_deleted = 0'}
         `;
 
             db.query(countQuery, search ? searchParams : [], (countErr, countResults) => {

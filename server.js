@@ -63,6 +63,9 @@ require("./app/routers/users.router")(app);
 require("./app/routers/units.router")(app);
 require("./app/routers/customer-admin-type.router")(app);
 require("./app/routers/currency.router")(app);
+require("./app/routers/sensors.router")(app);
+require("./app/routers/devices.router")(app);
+require("./app/routers/reports.router")(app);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

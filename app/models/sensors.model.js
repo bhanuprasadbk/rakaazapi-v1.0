@@ -8,6 +8,7 @@ module.exports = {
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
+                           'sensorParameter', sp.sensorParameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
                            'max_threshold_limit', sp.max_threshold_limit,
@@ -16,7 +17,7 @@ module.exports = {
                        )
                    ) as parameters
             FROM tbl_sensors s
-            LEFT JOIN sensorparameters sp ON s.id = sp.sensor_id
+            LEFT JOIN tbl_sensor_parameters sp ON s.id = sp.sensor_id
             WHERE s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -46,6 +47,7 @@ module.exports = {
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
+                           'sensorParameter', sp.sensorParameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
                            'max_threshold_limit', sp.max_threshold_limit,
@@ -54,7 +56,7 @@ module.exports = {
                        )
                    ) as parameters
             FROM tbl_sensors s
-            LEFT JOIN sensorparameters sp ON s.id = sp.sensor_id
+            LEFT JOIN tbl_sensor_parameters sp ON s.id = sp.sensor_id
             WHERE s.id = ? AND s.is_deleted = 0
             GROUP BY s.id
         `;
@@ -85,6 +87,7 @@ module.exports = {
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
+                           'sensorParameter', sp.sensorParameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
                            'max_threshold_limit', sp.max_threshold_limit,
@@ -93,7 +96,7 @@ module.exports = {
                        )
                    ) as parameters
             FROM tbl_sensors s
-            LEFT JOIN sensorparameters sp ON s.id = sp.sensor_id
+            LEFT JOIN tbl_sensor_parameters sp ON s.id = sp.sensor_id
             WHERE s.sensortype = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -123,6 +126,7 @@ module.exports = {
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
+                           'sensorParameter', sp.sensorParameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
                            'max_threshold_limit', sp.max_threshold_limit,
@@ -131,7 +135,7 @@ module.exports = {
                        )
                    ) as parameters
             FROM tbl_sensors s
-            LEFT JOIN sensorparameters sp ON s.id = sp.sensor_id
+            LEFT JOIN tbl_sensor_parameters sp ON s.id = sp.sensor_id
             WHERE s.status = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -182,14 +186,15 @@ module.exports = {
         }
 
         const query = `
-            INSERT INTO sensorparameters (
-                sensor_id, unit, min_threshold_limit, max_threshold_limit, 
+            INSERT INTO tbl_sensor_parameters (
+                sensor_id, sensorParameter, unit, min_threshold_limit, max_threshold_limit, 
                 index_start, index_end
             ) VALUES ?
         `;
         
         const values = parameters.map(param => [
             sensorId,
+            param.sensorParameter,
             param.unit,
             param.min_threshold_limit,
             param.max_threshold_limit,
@@ -255,14 +260,15 @@ module.exports = {
 
                         // Create parameters
                         const paramQuery = `
-                            INSERT INTO sensorparameters (
-                                sensor_id, unit, min_threshold_limit, max_threshold_limit, 
+                            INSERT INTO tbl_sensor_parameters (
+                                sensor_id, sensorParameter, unit, min_threshold_limit, max_threshold_limit, 
                                 index_start, index_end
                             ) VALUES ?
                         `;
                         
                         const paramValues = parameters.map(param => [
                             sensorId,
+                            param.sensorParameter,
                             param.unit,
                             param.min_threshold_limit,
                             param.max_threshold_limit,
@@ -322,7 +328,7 @@ module.exports = {
     // Update sensor parameters
     updateSensorParameters: (sensorId, parameters, callback) => {
         // First delete existing parameters
-        const deleteQuery = 'DELETE FROM sensorparameters WHERE sensor_id = ?';
+        const deleteQuery = 'DELETE FROM tbl_sensor_parameters WHERE sensor_id = ?';
         
         db.query(deleteQuery, [sensorId], (error) => {
             if (error) {
@@ -336,14 +342,15 @@ module.exports = {
 
             // Insert new parameters
             const insertQuery = `
-                INSERT INTO sensorparameters (
-                    sensor_id, unit, min_threshold_limit, max_threshold_limit, 
+                INSERT INTO tbl_sensor_parameters (
+                    sensor_id, sensorParameter, unit, min_threshold_limit, max_threshold_limit, 
                     index_start, index_end
                 ) VALUES ?
             `;
             
             const values = parameters.map(param => [
                 sensorId,
+                param.sensorParameter,
                 param.unit,
                 param.min_threshold_limit,
                 param.max_threshold_limit,
@@ -403,7 +410,7 @@ module.exports = {
                         }
 
                         // Delete existing parameters
-                        const deleteQuery = 'DELETE FROM sensorparameters WHERE sensor_id = ?';
+                        const deleteQuery = 'DELETE FROM tbl_sensor_parameters WHERE sensor_id = ?';
                         connection.query(deleteQuery, [id], (error) => {
                             if (error) {
                                 return connection.rollback(() => {
@@ -426,14 +433,15 @@ module.exports = {
 
                             // Insert new parameters
                             const paramQuery = `
-                                INSERT INTO sensorparameters (
-                                    sensor_id, unit, min_threshold_limit, max_threshold_limit, 
+                                INSERT INTO tbl_sensor_parameters (
+                                    sensor_id, sensorParameter, unit, min_threshold_limit, max_threshold_limit, 
                                     index_start, index_end
                                 ) VALUES ?
                             `;
                             
                             const paramValues = parameters.map(param => [
                                 id,
+                                param.sensorParameter,
                                 param.unit,
                                 param.min_threshold_limit,
                                 param.max_threshold_limit,
