@@ -6,7 +6,7 @@ This guide explains how to use the JWT authentication system implemented in the 
 
 The API uses JWT (JSON Web Tokens) for authentication and authorization. There are two types of users:
 - **System Users** (from `tbl_users` table)
-- **Customers** (from `tbl_customers` table)
+- **Customers** (from `tbl_customer_admins` table)
 
 ## Authentication Flow
 
@@ -302,7 +302,7 @@ REFRESH_SECRET_KEY=your-refresh-token-secret-key-here
 
 ### Required Tables
 - `tbl_users` - System users
-- `tbl_customers` - Customer accounts
+- `tbl_customer_admins` - Customer accounts
 - `tbl_roles` - User roles
 - `tbl_customer_admin_type` - Customer admin types
 

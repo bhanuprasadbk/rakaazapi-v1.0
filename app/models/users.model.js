@@ -9,7 +9,7 @@ module.exports = {
                    c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             ORDER BY u.name
         `;
         db.query(query, (error, results) => {
@@ -28,7 +28,7 @@ module.exports = {
                    c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.id = ?
         `;
         db.query(query, [id], (error, results) => {
@@ -69,7 +69,7 @@ module.exports = {
                    c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.role_id = ?
             ORDER BY u.name
         `;
@@ -89,7 +89,7 @@ module.exports = {
                    c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.customer_id = ?
             ORDER BY u.name
         `;

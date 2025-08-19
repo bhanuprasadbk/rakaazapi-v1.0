@@ -1,30 +1,30 @@
-const customersModel = require('../models/customers.model');
+const customersModel = require('../models/customeradmin.model');
 const logger = require('../logger/logger');
 const errorlog = require('../logger/logger').errorlog;
 const successlog = require('../logger/logger').successlog;
 
 module.exports = {
-    // Get all customers
-    getAllCustomers: async (req, res) => {
+    // Get all customer admins
+    getAllCustomerAdmins: async (req, res) => {
         try {
-            customersModel.getAllCustomers(req.body, (error, results) => {
+            customersModel.getAllCustomerAdmins(req.body, (error, results) => {
                 if (error) {
-                    errorlog.error('Error fetching customers:', error);
+                    errorlog.error('Error fetching customer admins:', error);
                     return res.status(500).json({
                         success: false,
-                        message: 'Error fetching customers',
+                        message: 'Error fetching customer admins',
                         error: error.message
                     });
                 }
-                successlog.info('Customers fetched successfully');
+                successlog.info('Customer admins fetched successfully');
                 return res.status(200).json({
                     success: true,
-                    message: 'Customers fetched successfully',
+                    message: 'Customer admins fetched successfully',
                     results
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in getAllCustomers:', error);
+            errorlog.error('Exception in getAllCustomerAdmins:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -33,24 +33,24 @@ module.exports = {
         }
     },
 
-    // Get customer by ID
-    getCustomerById: async (req, res) => {
+    // Get customer admin by ID
+    getCustomerAdminById: async (req, res) => {
         try {
             const { id } = req.params;
 
             if (!id) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Customer ID is required'
+                    message: 'Customer admin ID is required'
                 });
             }
 
-            customersModel.getCustomerById(id, (error, result) => {
+            customersModel.getCustomerAdminById(id, (error, result) => {
                 if (error) {
                     errorlog.error('Error fetching customer by ID:', error);
                     return res.status(500).json({
                         success: false,
-                        message: 'Error fetching customer',
+                        message: 'Error fetching customer admin',
                         error: error.message
                     });
                 }
@@ -58,19 +58,19 @@ module.exports = {
                 if (!result) {
                     return res.status(404).json({
                         success: false,
-                        message: 'Customer not found'
+                        message: 'Customer admin not found'
                     });
                 }
 
-                successlog.info(`Customer fetched with ID: ${id}`);
+                successlog.info(`Customer admin fetched with ID: ${id}`);
                 return res.status(200).json({
                     success: true,
-                    message: 'Customer fetched successfully',
+                    message: 'Customer admin fetched successfully',
                     data: result
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in getCustomerById:', error);
+            errorlog.error('Exception in getCustomerAdminById:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -79,24 +79,24 @@ module.exports = {
         }
     },
 
-    // Get customer by email
-    getCustomerByEmail: async (req, res) => {
+    // Get customer admin by email
+    getCustomerAdminByEmail: async (req, res) => {
         try {
             const { email } = req.params;
 
             if (!email) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Customer email is required'
+                    message: 'Customer admin email is required'
                 });
             }
 
-            customersModel.getCustomerByEmail(email, (error, result) => {
+            customersModel.getCustomerAdminByEmail(email, (error, result) => {
                 if (error) {
-                    errorlog.error('Error fetching customer by email:', error);
+                    errorlog.error('Error fetching customer admin by email:', error);
                     return res.status(500).json({
                         success: false,
-                        message: 'Error fetching customer',
+                        message: 'Error fetching customer admin',
                         error: error.message
                     });
                 }
@@ -104,19 +104,19 @@ module.exports = {
                 if (!result) {
                     return res.status(404).json({
                         success: false,
-                        message: 'Customer not found'
+                        message: 'Customer admin not found'
                     });
                 }
 
-                successlog.info(`Customer fetched with email: ${email}`);
+                successlog.info(`Customer admin fetched with email: ${email}`);
                 return res.status(200).json({
                     success: true,
-                    message: 'Customer fetched successfully',
+                    message: 'Customer admin fetched successfully',
                     data: result
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in getCustomerByEmail:', error);
+            errorlog.error('Exception in getCustomerAdminByEmail:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -125,8 +125,8 @@ module.exports = {
         }
     },
 
-    // Create new customer
-    createCustomer: async (req, res) => {
+    // Create new customer admin
+    createCustomerAdmin: async (req, res) => {
         try {
             const {
                 organization_name, contact_person_name, customer_admin_name, username,
@@ -160,7 +160,7 @@ module.exports = {
                 created_by
             };
 
-            customersModel.createCustomer(customerData, (error, insertId) => {
+            customersModel.createCustomerAdmin(customerData, (error, insertId) => {
                 if (error) {
                     errorlog.error('Error creating customer admin:', error);
                     return res.status(500).json({
@@ -179,7 +179,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in createCustomer:', error);
+            errorlog.error('Exception in createCustomerAdmin:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -188,8 +188,8 @@ module.exports = {
         }
     },
 
-    // Update customer
-    updateCustomer: async (req, res) => {
+    // Update customer admin
+    updateCustomerAdmin: async (req, res) => {
         try {
             const {
                 customer_id, // required for update
@@ -224,7 +224,7 @@ module.exports = {
                 updated_by
             };
 
-            customersModel.updateCustomer(customer_id, customerData, (error, result) => {
+            customersModel.updateCustomerAdmin(customer_id, customerData, (error, result) => {
                 if (error) {
                     errorlog.error('Error updating customer admin:', error);
                     return res.status(500).json({
@@ -249,7 +249,7 @@ module.exports = {
             });
 
         } catch (error) {
-            errorlog.error('Exception in updateCustomer:', error);
+            errorlog.error('Exception in updateCustomerAdmin:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -259,8 +259,8 @@ module.exports = {
     }
     ,
 
-    // Delete customer
-    deleteCustomer: async (req, res) => {
+    // Delete customer admin
+    deleteCustomerAdmin: async (req, res) => {
         try {
             const { id } = req.params;
 
@@ -271,7 +271,7 @@ module.exports = {
                 });
             }
 
-            customersModel.deleteCustomer(id, (error, deleted) => {
+            customersModel.deleteCustomerAdmin(id, (error, deleted) => {
                 if (error) {
                     errorlog.error('Error deleting customer:', error);
                     return res.status(500).json({
@@ -295,7 +295,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in deleteCustomer:', error);
+            errorlog.error('Exception in deleteCustomerAdmin:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
@@ -304,8 +304,8 @@ module.exports = {
         }
     },
 
-    // Get customers by admin type
-    getCustomersByAdminType: async (req, res) => {
+    // Get customer admins by admin type
+    getCustomerAdminsByAdminType: async (req, res) => {
         try {
             const { adminTypeId } = req.params;
 
@@ -316,24 +316,24 @@ module.exports = {
                 });
             }
 
-            customersModel.getCustomersByAdminType(adminTypeId, (error, results) => {
+            customersModel.getCustomerAdminsByAdminType(adminTypeId, (error, results) => {
                 if (error) {
-                    errorlog.error('Error fetching customers by admin type:', error);
+                    errorlog.error('Error fetching customer admins by admin type:', error);
                     return res.status(500).json({
                         success: false,
-                        message: 'Error fetching customers by admin type',
+                        message: 'Error fetching customer admins by admin type',
                         error: error.message
                     });
                 }
-                successlog.info(`Customers fetched for admin type: ${adminTypeId}`);
+                successlog.info(`Customer admins fetched for admin type: ${adminTypeId}`);
                 return res.status(200).json({
                     success: true,
-                    message: 'Customers fetched successfully',
+                    message: 'Customer admins fetched successfully',
                     data: results
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in getCustomersByAdminType:', error);
+            errorlog.error('Exception in getCustomerAdminsByAdminType:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',

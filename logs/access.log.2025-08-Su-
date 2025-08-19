@@ -26,3 +26,34 @@
 {"level":"info","message":"Devices fetched successfully"}
 {"level":"info","message":"Customers fetched successfully"}
 {"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customer type created with ID: 1"}
+{"level":"info","message":"Customer type created with ID: 1"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customer type created with ID: 2"}
+{"level":"info","message":"Customer types deleted: 2"}
+{"level":"info","message":"Customer type created with ID: 2"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customer fetched with ID: 1"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"States fetched for country: 101"}
+{"level":"info","message":"Cities fetched for state 36"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}

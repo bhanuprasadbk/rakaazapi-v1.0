@@ -80,10 +80,7 @@ module.exports = {
                 });
             });
         });
-    }
-
-    ,
-
+    },
     // Get customer by ID with related data
     getCustomerById: (id, callback) => {
         const query = `
@@ -144,10 +141,10 @@ module.exports = {
 
             const customerQuery = `
             INSERT INTO tbl_customers (
-                customer_id, organization_name, contact_person_name, customer_admin_name, 
-                email, contact_number, contact_object ,customer_admin_type, currency, 
+                customer_id, organization_name, contact_person_name, customer_name, 
+                email, contact_number, contact_object ,customer_type, currency,plan_id,
                 address, country_id, state_id, city_id, created_by
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
             const customerValues = [
@@ -160,6 +157,7 @@ module.exports = {
                 customerData.contact_object || '',
                 customerData.customer_admin_type,
                 customerData.currency || 'USD',
+                customerData.plan_id || 1,
                 customerData.address,
                 customerData.country_id,
                 customerData.state_id,
@@ -260,7 +258,6 @@ module.exports = {
             return callback(null, results.affectedRows > 0);
         });
     },
-
     // Delete customer
     deleteCustomer: (id, callback) => {
         const query = 'update tbl_customers set is_deleted = 1 WHERE id = ?';
@@ -271,7 +268,6 @@ module.exports = {
             return callback(null, results.affectedRows > 0);
         });
     },
-
     // Get customers by admin type
     getCustomersByAdminType: (adminTypeId, callback) => {
         const query = `

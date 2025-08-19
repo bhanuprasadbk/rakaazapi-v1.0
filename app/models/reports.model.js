@@ -49,7 +49,7 @@ module.exports = {
                     )
                 ) AS parameters
             FROM tbl_devices d
-            LEFT JOIN tbl_customers c ON d.customeradmin = c.id
+            LEFT JOIN tbl_customer_admins c ON d.customeradmin = c.id
             LEFT JOIN tbl_sensors s ON d.sensortype = s.id
             LEFT JOIN tbl_sensor_parameters sp ON d.sensortype = sp.sensor_id
             ${search ? searchCondition : 'WHERE d.is_deleted = 0'}
@@ -129,7 +129,7 @@ module.exports = {
                co.name as country_name,
                s.name as state_name,
                ci.name as city_name
-        FROM tbl_customers c
+        FROM tbl_customer_admins c
         LEFT JOIN tbl_customer_admin_type cat ON c.customer_admin_type = cat.id
         LEFT JOIN tbl_countries co ON c.country_id = co.id
         LEFT JOIN tbl_states s ON c.state_id = s.id
@@ -146,7 +146,7 @@ module.exports = {
             // Count query with same search filter
             const countQuery = `
             SELECT COUNT(*) as total 
-            FROM tbl_customers c
+            FROM tbl_customer_admins c
             LEFT JOIN tbl_customer_admin_type cat ON c.customer_admin_type = cat.id
             LEFT JOIN tbl_countries co ON c.country_id = co.id
             LEFT JOIN tbl_states s ON c.state_id = s.id

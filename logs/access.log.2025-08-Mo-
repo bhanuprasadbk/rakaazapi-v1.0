@@ -56,8 +56,8 @@
 {"level":"info","message":"Units fetched successfully"}
 {"level":"info","message":"Customer admin types fetched successfully"}
 {"level":"info","message":"Units fetched successfully"}
-{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"index":0,"level":"error","message":"Error deleting customer admin types: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sql":"DELETE FROM tbl_customer_admin_type WHERE id IN (1, 2)","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sqlState":"23000","stack":"Error: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))\n    at Sequence._packetToError (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\customer-admin-type.model.js:66:8)\n    at deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\controllers\\customer-admin-type.controller.js:236:36)\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\login.model.js:96:20)"}
-{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"index":0,"level":"error","message":"Error deleting customer admin types: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sql":"DELETE FROM tbl_customer_admin_type WHERE id IN (1, 2)","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sqlState":"23000","stack":"Error: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customers`, CONSTRAINT `tbl_customers_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))\n    at Sequence._packetToError (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\customer-admin-type.model.js:66:8)\n    at deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\controllers\\customer-admin-type.controller.js:236:36)\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\login.model.js:96:20)"}
+{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"index":0,"level":"error","message":"Error deleting customer admin types: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sql":"DELETE FROM tbl_customer_admin_type WHERE id IN (1, 2)","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sqlState":"23000","stack":"Error: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))\n    at Sequence._packetToError (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\customer-admin-type.model.js:66:8)\n    at deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\controllers\\customer-admin-type.controller.js:236:36)\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\login.model.js:96:20)"}
+{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"index":0,"level":"error","message":"Error deleting customer admin types: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sql":"DELETE FROM tbl_customer_admin_type WHERE id IN (1, 2)","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))","sqlState":"23000","stack":"Error: ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`rakaz_dev`.`tbl_customer_admins`, CONSTRAINT `tbl_customer_admins_ibfk_1` FOREIGN KEY (`customer_admin_type`) REFERENCES `tbl_customer_admin_type` (`id`))\n    at Sequence._packetToError (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\customer-admin-type.model.js:66:8)\n    at deleteCustomerAdminType (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\controllers\\customer-admin-type.controller.js:236:36)\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\hmi\\Rakaz\\rakaz_api_28072025 - Copy\\app\\models\\login.model.js:96:20)"}
 {"level":"info","message":"Units fetched successfully"}
 {"level":"info","message":"Customer admin types fetched successfully"}
 {"level":"info","message":"Customer admin type created with ID: 1"}
@@ -787,3 +787,172 @@
 {"level":"info","message":"Device mapping list fetched successfully"}
 {"level":"info","message":"Devices fetched successfully"}
 {"level":"info","message":"Device mapping list fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"User logged in successfully: yaantrac"}
+{"level":"error","message":"Exception in createSubscription: db.beginTransaction is not a function","stack":"TypeError: db.beginTransaction is not a function\n    at Object.createSubscription (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\subscriptions.model.js:114:12)\n    at createSubscription (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\controllers\\subscriptions.controller.js:187:32)\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\login.model.js:96:20)\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:526:10)"}
+{"level":"error","message":"Exception in createSubscription: db.beginTransaction is not a function","stack":"TypeError: db.beginTransaction is not a function\n    at Object.createSubscription (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\subscriptions.model.js:114:12)\n    at createSubscription (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\controllers\\subscriptions.controller.js:187:32)\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\login.model.js:96:20)\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:526:10)"}
+{"level":"info","message":"Subscription created with ID: 1"}
+{"level":"info","message":"Subscription created with ID: 1"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscription created with ID: 2"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription updated with ID: 2"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription deleted with ID: 1"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscription created with ID: 3"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"States fetched for country: 101"}
+{"level":"info","message":"Cities fetched for state 5"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: yaantrac"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customer fetched with ID: 1"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer admin types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"States fetched for country: 101"}
+{"level":"info","message":"Cities fetched for state 36"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}

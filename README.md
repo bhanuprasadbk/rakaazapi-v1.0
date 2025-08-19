@@ -71,7 +71,7 @@ The API requires the following MySQL tables:
 - `tbl_countries` - Countries with phone codes
 - `tbl_states` - States with country relationships
 - `tbl_users` - System users with roles
-- `tbl_customers` - Customer organizations
+- `tbl_customer_admins` - Customer organizations
 - `tbl_roles` - User roles
 - `tbl_customer_admin_type` - Customer admin types
 
@@ -99,7 +99,7 @@ CREATE TABLE user_refresh_tokens (
    - Have roles (Admin, Super Admin, User)
    - Passwords are hashed with bcrypt
 
-2. **Customers** (`tbl_customers`)
+2. **Customers** (`tbl_customer_admins`)
    - External customer organizations
    - Have admin types
    - Passwords should be hashed in production

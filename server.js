@@ -67,6 +67,10 @@ require("./app/routers/sensors.router")(app);
 require("./app/routers/devices.router")(app);
 require("./app/routers/reports.router")(app);
 
+/*Customer Admin Router*/
+require("./app/routers/customer-type.router")(app);
+require("./app/routers/subscriptions.router")(app);
+
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

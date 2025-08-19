@@ -9,7 +9,7 @@ module.exports = {
             SELECT u.*, r.name as role_name, c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.username = ? AND u.is_active = 1
         `;
         
@@ -45,7 +45,7 @@ module.exports = {
     authenticateCustomer: (username, password, callback) => {
         const query = `
             SELECT c.*, cat.cust_admin_type
-            FROM tbl_customers c
+            FROM tbl_customer_admins c
             LEFT JOIN tbl_customer_admin_type cat ON c.customer_admin_type = cat.id
             WHERE c.username = ?
         `;
@@ -80,7 +80,7 @@ module.exports = {
                    r.name as role_name, c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.id = ? AND u.is_active = 1
         `;
         
@@ -104,7 +104,7 @@ module.exports = {
                    r.name as role_name, c.organization_name as customer_name
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
-            LEFT JOIN tbl_customers c ON u.customer_id = c.id
+            LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id
             WHERE u.id = ? AND u.is_active = 1
         `;
         

@@ -11,7 +11,7 @@ http://localhost:3002/api
 
 The API uses JWT (JSON Web Tokens) for authentication. There are two types of users:
 - **System Users** (from `tbl_users` table)
-- **Customers** (from `tbl_customers` table)
+- **Customers** (from `tbl_customer_admins` table)
 
 ### Getting a JWT Token
 

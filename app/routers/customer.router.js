@@ -1,9 +1,9 @@
-const customersController = require("../controllers/customers.controller");
+const customersController = require("../controllers/customer.controller");
 const { authenticateToken, authorizeRole } = require("../middleware/auth.middleware");
 
 module.exports = app => {
     // Protected routes (authentication required)
-    app.post('/api/getcustomers', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getAllCustomers);
+    app.post('/api/get-customers', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getAllCustomers);
     app.get('/api/customers/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomerById);
     app.get('/api/customers/email/:email', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomerByEmail);
     app.get('/api/customers/admin-type/:adminTypeId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomersByAdminType);

@@ -318,7 +318,7 @@ module.exports = {
                 c.customer_admin_name,c.id,
                 COUNT(*) AS device_count
             FROM tbl_devices d
-            LEFT JOIN tbl_customers c 
+            LEFT JOIN tbl_customer_admins c 
                 ON d.customeradmin = c.id
             WHERE d.is_deleted = 0 
               AND c.customer_admin_name LIKE ?
@@ -332,7 +332,7 @@ module.exports = {
             FROM (
                 SELECT d.customeradmin
                 FROM tbl_devices d
-                LEFT JOIN tbl_customers c 
+                LEFT JOIN tbl_customer_admins c 
                     ON d.customeradmin = c.id
                 WHERE d.is_deleted = 0 
                   AND c.customer_admin_name LIKE ?
@@ -384,7 +384,7 @@ module.exports = {
 FROM tbl_sensors s
 JOIN tbl_devices d 
     ON FIND_IN_SET(s.id, d.sensortype) > 0
-JOIN tbl_customers c 
+JOIN tbl_customer_admins c 
     ON d.customeradmin = c.id
 JOIN tbl_sensor_parameters sp
     ON sp.sensor_id = s.id
