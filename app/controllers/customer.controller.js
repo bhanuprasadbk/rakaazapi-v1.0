@@ -129,27 +129,28 @@ module.exports = {
     createCustomer: async (req, res) => {
         try {
             const {
-                organization_name, contact_person_name, customer_admin_name, username,
-                email, contact_number, contact_object, customer_admin_type, roleid, currency,
+                organization_name, contact_person_name, customer_name, username,
+                email, plan_id,contact_number, contact_object, customer_type, roleid, currency,
                 password, address, country_id, state_id, city_id, created_by
             } = req.body;
 
-            if (!organization_name || !customer_admin_name || !email || !password) {
+            if (!organization_name || !customer_name || !email || !password) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Organization name, customer admin name, email, and password are required'
+                    message: 'Organization name, customer name, email, and password are required'
                 });
             }
 
             const customerData = {
                 organization_name,
                 contact_person_name,
-                customer_admin_name,
+                customer_name,
                 username,
                 email,
+                plan_id,
                 contact_number,
                 contact_object,
-                customer_admin_type,
+                customer_type,
                 roleid,
                 currency,
                 password,
@@ -174,7 +175,7 @@ module.exports = {
 
                 return res.status(201).json({
                     success: true,
-                    message: 'Customer Admin created successfully',
+                    message: 'Customer created successfully',
                     data: insertId
                 });
             });
@@ -193,27 +194,28 @@ module.exports = {
         try {
             const {
                 customer_id, // required for update
-                organization_name, contact_person_name, customer_admin_name, username,
-                email, contact_number, contact_object, customer_admin_type, roleid, currency,
-                address, country_id, state_id, city_id, updated_by
+                organization_name, contact_person_name, customer_name, username,
+                email, plan_id, contact_number, contact_object, customer_type, roleid, currency,
+                address, country_id, state_id, city_id, modified_by,vat_id,trade_license_id
             } = req.body;
 
-            if (!customer_id || !organization_name || !customer_admin_name || !email) {
+            if (!customer_id || !organization_name || !customer_name || !email) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Customer ID, organization name, customer admin name, and email are required'
+                    message: 'Customer ID, organization name, customer name, and email are required'
                 });
             }
 
             const customerData = {
                 organization_name,
                 contact_person_name,
-                customer_admin_name,
+                customer_name,
                 username,
                 email,
+                plan_id,
                 contact_number,
                 contact_object,
-                customer_admin_type,
+                customer_type,
                 roleid,
                 currency,
                // password,
@@ -221,8 +223,11 @@ module.exports = {
                 country_id,
                 state_id,
                 city_id,
-                updated_by
+                modified_by,
+                vat_id,
+                trade_license_id
             };
+
 
             customersModel.updateCustomer(customer_id, customerData, (error, result) => {
                 if (error) {
@@ -304,28 +309,28 @@ module.exports = {
         }
     },
 
-    // Get customers by admin type
-    getCustomersByAdminType: async (req, res) => {
+    // Get customers by customer type
+    getCustomersByCustomerType: async (req, res) => {
         try {
-            const { adminTypeId } = req.params;
+            const { customerTypeId } = req.params;
 
-            if (!adminTypeId) {
+            if (!customerTypeId) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Admin type ID is required'
+                    message: 'Customer type ID is required'
                 });
             }
 
-            customersModel.getCustomersByAdminType(adminTypeId, (error, results) => {
+            customersModel.getCustomersByCustomerType(customerTypeId, (error, results) => {
                 if (error) {
-                    errorlog.error('Error fetching customers by admin type:', error);
+                    errorlog.error('Error fetching customers by customer type:', error);
                     return res.status(500).json({
                         success: false,
-                        message: 'Error fetching customers by admin type',
+                        message: 'Error fetching customers by customer type',
                         error: error.message
                     });
                 }
-                successlog.info(`Customers fetched for admin type: ${adminTypeId}`);
+                successlog.info(`Customers fetched for customer type: ${customerTypeId}`);
                 return res.status(200).json({
                     success: true,
                     message: 'Customers fetched successfully',
@@ -333,7 +338,7 @@ module.exports = {
                 });
             });
         } catch (error) {
-            errorlog.error('Exception in getCustomersByAdminType:', error);
+            errorlog.error('Exception in getCustomersByCustomerType:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',

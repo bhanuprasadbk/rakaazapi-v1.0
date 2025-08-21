@@ -41,7 +41,7 @@ module.exports = {
         LEFT JOIN tbl_countries co ON c.country_id = co.id
         LEFT JOIN tbl_states s ON c.state_id = s.id
         LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-        ${search ? searchCondition : 'WHERE c.is_deleted = 0'}
+        ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 2'}
         ORDER BY c.organization_name
         LIMIT ? OFFSET ?`;
 
@@ -58,7 +58,7 @@ module.exports = {
             LEFT JOIN tbl_countries co ON c.country_id = co.id
             LEFT JOIN tbl_states s ON c.state_id = s.id
             LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-            ${search ? searchCondition : 'WHERE c.is_deleted = 0'}
+            ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 2'}
         `;
 
             db.query(countQuery, search ? searchParams : [], (countErr, countResults) => {

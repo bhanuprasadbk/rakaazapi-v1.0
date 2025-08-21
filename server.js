@@ -56,7 +56,8 @@ require("./app/routers/login.router")(app);
 require("./app/routers/cities.router")(app);
 require("./app/routers/countries.router")(app);
 require("./app/routers/customer-admin-type.router")(app);
-require("./app/routers/customers.router")(app);
+require("./app/routers/customeradmin.router")(app);
+require("./app/routers/customer.router")(app);
 require("./app/routers/roles.router")(app);
 require("./app/routers/states.router")(app);
 require("./app/routers/users.router")(app);
@@ -70,7 +71,7 @@ require("./app/routers/reports.router")(app);
 /*Customer Admin Router*/
 require("./app/routers/customer-type.router")(app);
 require("./app/routers/subscriptions.router")(app);
-
+require("./app/routers/sensors-group.router")(app);
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
