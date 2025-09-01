@@ -584,3 +584,121 @@
 {"level":"info","message":"Customers fetched successfully"}
 {"level":"info","message":"Customers fetched successfully"}
 {"level":"info","message":"Device report fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 4 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 4 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group created with ID: undefined and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 5 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 5 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 5 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 5 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group updated with ID: 5 and parameters"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: yaantrac"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"Device mapping list fetched successfully"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: yaantrac"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"Customer admins fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"code":"ER_NO_SUCH_TABLE","errno":1146,"index":0,"level":"error","message":"Error fetching sensor groups: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sql":"\n            SELECT s.*, \n                   GROUP_CONCAT(\n                       JSON_OBJECT(\n                           'id', sp.id,\n                           'sensor_group_id', sp.sensor_group_id,\n                           'sensor_parameter_name',sep.sensorParameter,\n                           'sensor_parameter', sp.sensor_parameter,\n                           'unit', sp.unit,\n                           'min_threshold_limit', sp.min_threshold_limit,\n                           'max_threshold_limit', sp.max_threshold_limit\n                       )\n                   ) as parameters\n            FROM tbl_sensor_group s\n            LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id\n            LEFT JOIN tbl_sensor_parameter sep ON sp.sensor_parameter = sep.id\n            WHERE s.is_deleted = 0\n            GROUP BY s.id\n            ORDER BY s.created_on DESC\n        ","sqlMessage":"Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sqlState":"42S02","stack":"Error: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist\n    at Sequence._packetToError (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\sensors-group.model.js:26:12)\n    at getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\controllers\\sensors-group.controller.js:10:26)\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\login.model.js:96:20)"}
+{"level":"info","message":"Customers fetched successfully"}
+{"code":"ER_NO_SUCH_TABLE","errno":1146,"index":0,"level":"error","message":"Error fetching sensor groups: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sql":"\n            SELECT s.*, \n                   GROUP_CONCAT(\n                       JSON_OBJECT(\n                           'id', sp.id,\n                           'sensor_group_id', sp.sensor_group_id,\n                           'sensor_parameter_name',sep.sensorParameter,\n                           'sensor_parameter', sp.sensor_parameter,\n                           'unit', sp.unit,\n                           'min_threshold_limit', sp.min_threshold_limit,\n                           'max_threshold_limit', sp.max_threshold_limit\n                       )\n                   ) as parameters\n            FROM tbl_sensor_group s\n            LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id\n            LEFT JOIN tbl_sensor_parameter sep ON sp.sensor_parameter = sep.id\n            WHERE s.is_deleted = 0\n            GROUP BY s.id\n            ORDER BY s.created_on DESC\n        ","sqlMessage":"Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sqlState":"42S02","stack":"Error: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist\n    at Sequence._packetToError (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\sensors-group.model.js:26:12)\n    at getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\controllers\\sensors-group.controller.js:10:26)\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\login.model.js:96:20)"}
+{"code":"ER_NO_SUCH_TABLE","errno":1146,"index":0,"level":"error","message":"Error fetching sensor groups: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sql":"\n            SELECT s.*, \n                   GROUP_CONCAT(\n                       JSON_OBJECT(\n                           'id', sp.id,\n                           'sensor_group_id', sp.sensor_group_id,\n                           'sensor_parameter_name',sep.sensorParameter,\n                           'sensor_parameter', sp.sensor_parameter,\n                           'unit', sp.unit,\n                           'min_threshold_limit', sp.min_threshold_limit,\n                           'max_threshold_limit', sp.max_threshold_limit\n                       )\n                   ) as parameters\n            FROM tbl_sensor_group s\n            LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id\n            LEFT JOIN tbl_sensor_parameter sep ON sp.sensor_parameter = sep.id\n            WHERE s.is_deleted = 0\n            GROUP BY s.id\n            ORDER BY s.created_on DESC\n        ","sqlMessage":"Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist","sqlState":"42S02","stack":"Error: ER_NO_SUCH_TABLE: Table 'rakaz_dev.tbl_sensor_parameter' doesn't exist\n    at Sequence._packetToError (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:517:28)\n    at addChunk (node:internal/streams/readable:368:12)\n    --------------------\n    at Pool.query (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at Object.getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\sensors-group.model.js:26:12)\n    at getAllSensorGroups (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\controllers\\sensors-group.controller.js:10:26)\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:85:9\n    at Layer.handle [as handle_request] (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\middleware\\auth.middleware.js:63:13\n    at Query.<anonymous> (D:\\askiam\\Latest UI Rakaaz\\rakaazapi-v1.0\\app\\models\\login.model.js:96:20)"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor group deleted with ID: 5"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}

@@ -9,6 +9,7 @@ module.exports = {
                        JSON_OBJECT(
                            'id', sp.id,
                            'sensor_group_id', sp.sensor_group_id,
+                           'sensor_parameter_name',sep.sensorParameter,
                            'sensor_parameter', sp.sensor_parameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
@@ -17,6 +18,7 @@ module.exports = {
                    ) as parameters
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
+            LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
             WHERE s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -47,6 +49,7 @@ module.exports = {
                        JSON_OBJECT(
                            'id', sp.id,
                            'sensor_group_id', sp.sensor_group_id,
+                           'sensor_parameter_name',sep.sensorParameter,
                            'sensor_parameter', sp.sensor_parameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
@@ -55,6 +58,7 @@ module.exports = {
                    ) as parameters
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
+            LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
             WHERE s.id = ? AND s.is_deleted = 0
             GROUP BY s.id
         `;
@@ -86,6 +90,7 @@ module.exports = {
                        JSON_OBJECT(
                            'id', sp.id,
                            'sensor_group_id', sp.sensor_group_id,
+                           'sensor_parameter_name',sep.sensorParameter,
                            'sensor_parameter', sp.sensor_parameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
@@ -94,6 +99,7 @@ module.exports = {
                    ) as parameters
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
+            LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
             WHERE s.sensortype = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -124,6 +130,7 @@ module.exports = {
                        JSON_OBJECT(
                            'id', sp.id,
                            'sensor_group_id', sp.sensor_group_id,
+                           'sensor_parameter_name',sep.sensorParameter,
                            'sensor_parameter', sp.sensor_parameter,
                            'unit', sp.unit,
                            'min_threshold_limit', sp.min_threshold_limit,
@@ -132,6 +139,7 @@ module.exports = {
                    ) as parameters
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
+            LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
             WHERE s.status = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
