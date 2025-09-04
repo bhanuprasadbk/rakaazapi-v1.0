@@ -38,6 +38,7 @@ module.exports = {
                 // Generate JWT token
                 const tokenPayload = {
                     id: user.id,
+                    customer_admin_id: user.customer_admin_id,
                     username: user.username,
                     email: user.email,
                     name: user.name,
@@ -64,6 +65,7 @@ module.exports = {
                     data: {
                         user: {
                             id: user.id,
+                            customer_id: user.customer_id,
                             name: user.name,
                             username: user.username,
                             email: user.email,
@@ -118,6 +120,7 @@ module.exports = {
                 // Generate JWT token
                 const tokenPayload = {
                     id: customer.id,
+                    customer_id: customer.customer_id,
                     username: customer.username,
                     email: customer.email,
                     organization_name: customer.organization_name,
@@ -142,6 +145,7 @@ module.exports = {
                     data: {
                         customer: {
                             id: customer.id,
+                            customer_id: customer.customer_id,
                             organization_name: customer.organization_name,
                             customer_admin_name: customer.customer_admin_name,
                             username: customer.username,

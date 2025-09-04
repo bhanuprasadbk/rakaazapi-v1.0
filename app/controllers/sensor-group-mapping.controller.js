@@ -572,5 +572,346 @@ module.exports = {
                 error: error.message
             });
         }
+    },
+
+    // Get all SensorTypes
+    getAllSensorTypes: async (req, res) => {
+        try {
+            sensorGroupMappingModel.getAllSensorTypes((error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor types:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor types',
+                        error: error.message
+                    });
+                }
+                successlog.info('Sensor types fetched successfully');
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor types fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getAllSensorTypes:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get SensorTypes by status
+    getSensorTypesByStatus: async (req, res) => {
+        try {
+            const { status } = req.params;
+            
+            if (!status) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Status is required'
+                });
+            }
+
+            sensorGroupMappingModel.getSensorTypesByStatus(status, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor types by status:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor types by status',
+                        error: error.message
+                    });
+                }
+
+                successlog.info(`Sensor types fetched for status: ${status}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor types fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getSensorTypesByStatus:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get all Groups of SensorTypes
+    getAllSensorGroups: async (req, res) => {
+        try {
+            sensorGroupMappingModel.getAllSensorGroups((error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor groups:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor groups',
+                        error: error.message
+                    });
+                }
+                successlog.info('Sensor groups fetched successfully');
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor groups fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getAllSensorGroups:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get SensorGroups by sensor type
+    getSensorGroupsBySensorType: async (req, res) => {
+        try {
+            const { sensorTypeId } = req.params;
+            
+            if (!sensorTypeId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Sensor type ID is required'
+                });
+            }
+
+            sensorGroupMappingModel.getSensorGroupsBySensorType(sensorTypeId, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor groups by sensor type:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor groups by sensor type',
+                        error: error.message
+                    });
+                }
+
+                successlog.info(`Sensor groups fetched for sensor type ID: ${sensorTypeId}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor groups fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getSensorGroupsBySensorType:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get SensorGroups by status
+    getSensorGroupsByStatus: async (req, res) => {
+        try {
+            const { status } = req.params;
+            
+            if (!status) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Status is required'
+                });
+            }
+
+            sensorGroupMappingModel.getSensorGroupsByStatus(status, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor groups by status:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor groups by status',
+                        error: error.message
+                    });
+                }
+
+                successlog.info(`Sensor groups fetched for status: ${status}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor groups fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getSensorGroupsByStatus:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get parameters associated to groups
+    getParametersBySensorGroup: async (req, res) => {
+        try {
+            const { sensorGroupId } = req.params;
+            
+            if (!sensorGroupId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Sensor group ID is required'
+                });
+            }
+
+            sensorGroupMappingModel.getParametersBySensorGroup(sensorGroupId, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching parameters by sensor group:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching parameters by sensor group',
+                        error: error.message
+                    });
+                }
+
+                successlog.info(`Parameters fetched for sensor group ID: ${sensorGroupId}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Parameters fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getParametersBySensorGroup:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get all parameters for all groups
+    getAllGroupParameters: async (req, res) => {
+        try {
+            sensorGroupMappingModel.getAllGroupParameters((error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching all group parameters:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching all group parameters',
+                        error: error.message
+                    });
+                }
+                successlog.info('All group parameters fetched successfully');
+                return res.status(200).json({
+                    success: true,
+                    message: 'All group parameters fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getAllGroupParameters:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get parameters by sensor type
+    getParametersBySensorType: async (req, res) => {
+        try {
+            const { sensorTypeId } = req.params;
+            
+            if (!sensorTypeId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Sensor type ID is required'
+                });
+            }
+
+            sensorGroupMappingModel.getParametersBySensorType(sensorTypeId, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching parameters by sensor type:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching parameters by sensor type',
+                        error: error.message
+                    });
+                }
+
+                successlog.info(`Parameters fetched for sensor type ID: ${sensorTypeId}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Parameters fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getParametersBySensorType:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get comprehensive data: SensorTypes with their Groups and Parameters
+    getSensorTypesWithGroupsAndParameters: async (req, res) => {
+        try {
+            sensorGroupMappingModel.getSensorTypesWithGroupsAndParameters((error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching sensor types with groups and parameters:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching sensor types with groups and parameters',
+                        error: error.message
+                    });
+                }
+                successlog.info('Sensor types with groups and parameters fetched successfully');
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sensor types with groups and parameters fetched successfully',
+                    data: results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getSensorTypesWithGroupsAndParameters:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get all customers for sensor group mapping
+    getAllCustomersForSensorGroupMapping: async (req, res) => {
+        console.log("getAllCustomersForSensorGroupMapping");
+        try {
+            sensorGroupMappingModel.getAllCustomersForSensorGroupMapping(req.body, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching all customers for sensor group mapping:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching all customers for sensor group mapping',
+                        error: error.message
+                    });
+                }
+                successlog.info('All customers for sensor group mapping fetched successfully');
+                return res.status(200).json({
+                    success: true,
+                    message: 'All customers for sensor group mapping fetched successfully',
+                    results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getAllCustomersForSensorGroupMapping:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
     }
 };

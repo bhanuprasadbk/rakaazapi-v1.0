@@ -24,4 +24,27 @@ module.exports = app => {
     
     // PATCH routes
     app.patch('/api/sensor-group-mappings/:id/status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.updateSensorGroupMappingStatus);
+
+    // New routes for SensorTypes, Groups, and Parameters
+    
+    // SensorTypes routes
+    app.get('/api/sensor-types', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllSensorTypes);
+    app.get('/api/sensor-types/status/:status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorTypesByStatus);
+    
+    // SensorGroups routes
+    app.get('/api/sensor-groups', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllSensorGroups);
+    app.get('/api/sensor-groups/sensor-type/:sensorTypeId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupsBySensorType);
+    app.get('/api/sensor-groups/status/:status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupsByStatus);
+    
+    // Parameters routes
+    app.get('/api/sensor-group-parameters', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllGroupParameters);
+    app.get('/api/sensor-group-parameters/group/:sensorGroupId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getParametersBySensorGroup);
+    app.get('/api/sensor-group-parameters/sensor-type/:sensorTypeId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getParametersBySensorType);
+    
+    // Comprehensive data route
+    app.get('/api/sensor-types-comprehensive', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorTypesWithGroupsAndParameters);
+
+    // Get all customers for sensor group mapping
+    app.post('/api/sensor-group-mappings/customers', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllCustomersForSensorGroupMapping);
+
 };

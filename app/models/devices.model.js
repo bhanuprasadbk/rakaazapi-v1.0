@@ -359,38 +359,53 @@ module.exports = {
             SELECT 
     s.id AS sensor_id,
     s.sensortype,
-    JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', d.id,
-            'device_id',d.deviceId,
-            'device_name', d.deviceName,
-            'device_make', d.devicemake,
-            'device_model', d.devicemodel,
-            'sensortype',d.sensortype,
-            'customer_name', c.customer_admin_name
+
+    -- Aggregate devices per sensor
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', d.id,
+                'device_id', d.deviceId,
+                'device_name', d.deviceName,
+                'device_make', d.devicemake,
+                'device_model', d.devicemodel,
+                'sensortype', d.sensortype,
+                'customer_name', c.customer_admin_name
+            )
         )
+        FROM tbl_devices d
+        JOIN tbl_customer_admins c ON d.customeradmin = c.id
+        WHERE FIND_IN_SET(s.id, d.sensortype) > 0
+          AND d.is_deleted = 0
+          AND c.id = 1
     ) AS devices,
-    JSON_ARRAYAGG(
-        JSON_OBJECT(
-	    'sensortype',sp.sensor_id,
-            'parameter', sp.sensorParameter,
-            'unit', sp.unit,
-            'min_threshold', sp.min_threshold_limit,
-            'max_threshold', sp.max_threshold_limit,
-            'index_start', sp.index_start,
-            'index_end', sp.index_end
+
+    -- Aggregate parameters per sensor
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'sensortype', sp.sensor_id,
+                'parameter', sp.sensorParameter,
+                'unit', sp.unit,
+                'min_threshold', sp.min_threshold_limit,
+                'max_threshold', sp.max_threshold_limit,
+                'index_start', sp.index_start,
+                'index_end', sp.index_end
+            )
         )
+        FROM tbl_sensor_parameters sp
+        WHERE sp.sensor_id = s.id
     ) AS parameters
+
 FROM tbl_sensors s
-JOIN tbl_devices d 
-    ON FIND_IN_SET(s.id, d.sensortype) > 0
-JOIN tbl_customer_admins c 
-    ON d.customeradmin = c.id
-JOIN tbl_sensor_parameters sp
-    ON sp.sensor_id = s.id
-WHERE d.is_deleted = 0
-AND c.id = ? -- Pass customer ID if needed
-GROUP BY s.id
+WHERE EXISTS (
+    SELECT 1
+    FROM tbl_devices d
+    JOIN tbl_customer_admins c ON d.customeradmin = c.id
+    WHERE FIND_IN_SET(s.id, d.sensortype) > 0
+      AND d.is_deleted = 0
+      AND c.id = ?
+)
 ORDER BY s.id
         `;
         db.query(query, [customer_id], (error, results) => {
