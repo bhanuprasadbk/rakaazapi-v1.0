@@ -7,6 +7,7 @@ module.exports = app => {
     app.get('/api/customers/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomerById);
     app.get('/api/customers/email/:email', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomerByEmail);
     app.get('/api/customers/customer-type/:customerTypeId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomersByCustomerType);
+    app.post('/api/customers/by-organization', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.getCustomersByOrganization);
     
     // Admin-only routes
     app.post('/api/customers', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.createCustomer);

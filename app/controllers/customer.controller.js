@@ -131,7 +131,7 @@ module.exports = {
             const {
                 organization_name, contact_person_name, customer_name, username,
                 email, plan_id,contact_number, contact_object, customer_type, roleid, currency,
-                password, address, country_id, state_id, city_id, created_by
+                password, address, country_id, state_id, city_id, created_by,organization
             } = req.body;
 
             if (!organization_name || !customer_name || !email || !password) {
@@ -158,7 +158,8 @@ module.exports = {
                 country_id,
                 state_id,
                 city_id,
-                created_by
+                created_by,
+                organization
             };
 
             customersModel.createCustomer(customerData, (error, insertId) => {
@@ -339,6 +340,52 @@ module.exports = {
             });
         } catch (error) {
             errorlog.error('Exception in getCustomersByCustomerType:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    },
+
+    // Get customers by organization of Customer Admin
+    getCustomersByOrganization: async (req, res) => {
+        try {
+            const { organization_id, customer_admin_id, limit, page, search } = req.body;
+
+            if (!organization_id && !customer_admin_id) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Either organization_id or customer_admin_id is required'
+                });
+            }
+
+            const requestBody = {
+                organization_id,
+                customer_admin_id,
+                limit,
+                page,
+                search
+            };
+
+            customersModel.getCustomersByOrganization(requestBody, (error, results) => {
+                if (error) {
+                    errorlog.error('Error fetching customers by organization:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error fetching customers by organization',
+                        error: error.message
+                    });
+                }
+                successlog.info(`Customers fetched for organization/customer admin: ${organization_id || customer_admin_id}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Customers fetched successfully',
+                    results
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in getCustomersByOrganization:', error);
             return res.status(500).json({
                 success: false,
                 message: 'Internal server error',

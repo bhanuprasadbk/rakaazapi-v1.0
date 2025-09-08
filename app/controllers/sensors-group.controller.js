@@ -7,7 +7,8 @@ module.exports = {
     // Get all sensor groups
     getAllSensorGroups: async (req, res) => {
         try {
-            sensorsModel.getAllSensorGroups((error, results) => {
+            const { organization_id } = req.body;
+            sensorsModel.getAllSensorGroups(organization_id, (error, results) => {
                 if (error) {
                     errorlog.error('Error fetching sensor groups:', error);
                     return res.status(500).json({
@@ -160,7 +161,7 @@ module.exports = {
         try {
             const {
                 sensor_group_name,
-                sensor_type, status, created_by, parameters
+                sensor_type, status, created_by, parameters, organization_id
             } = req.body;
             
             if (!sensor_type || !created_by) {
@@ -174,7 +175,7 @@ module.exports = {
                 sensor_group_name,
                 sensor_type,
                 status: status || 'active',
-                created_by
+                created_by, organization_id
             };
 
             // If parameters are provided, create sensor with parameters

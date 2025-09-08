@@ -1,4 +1,5 @@
 const sensorGroupMappingModel = require('../models/sensor-group-mapping.model');
+const devicesModel = require('../models/devices.model');
 const logger = require('../logger/logger');
 const errorlog = require('../logger/logger').errorlog;
 const successlog = require('../logger/logger').successlog;
@@ -7,7 +8,7 @@ module.exports = {
     // Get all sensor group mappings
     getAllSensorGroupMappings: async (req, res) => {
         try {
-            sensorGroupMappingModel.getAllSensorGroupMappings((error, results) => {
+            sensorGroupMappingModel.getAllSensorGroupMappings(req.body.organization_id,(error, results) => {
                 if (error) {
                     errorlog.error('Error fetching sensor group mappings:', error);
                     return res.status(500).json({
@@ -238,7 +239,7 @@ module.exports = {
     // Create new sensor group mapping
     createSensorGroupMapping: async (req, res) => {
         try {
-            const { sensor_type, sensor_group, customer_id, device_id, status } = req.body;
+            const { sensor_type, sensor_group, customer_id, device_id,fine_amount,frequency,frequency_per,warning,warning_per,penalty,penalty_per,reset_type,organization_id,status, latitude, longitude } = req.body;
             const created_by = req.user ? req.user.id : req.body.created_by;
 
             // Validation
@@ -292,6 +293,15 @@ module.exports = {
                         sensor_group,
                         customer_id,
                         device_id,
+                        fine_amount,
+                        frequency,
+                        frequency_per,
+                        warning,
+                        warning_per,
+                        penalty,
+                        penalty_per,
+                        reset_type,
+                        organization_id,
                         status: status || 'active',
                         created_by
                     };
@@ -303,6 +313,18 @@ module.exports = {
                                 success: false,
                                 message: 'Error creating sensor group mapping',
                                 error: createError.message
+                            });
+                        }
+
+                        // Update device coordinates if provided
+                        if (latitude && longitude) {
+                            devicesModel.updateDeviceCoordinates(device_id, latitude, longitude, created_by, (coordError, coordUpdated) => {
+                                if (coordError) {
+                                    errorlog.error('Error updating device coordinates:', coordError);
+                                    // Don't fail the entire request, just log the error
+                                } else if (coordUpdated) {
+                                    successlog.info(`Device coordinates updated for device ID: ${device_id}`);
+                                }
                             });
                         }
 
@@ -329,7 +351,7 @@ module.exports = {
     updateSensorGroupMapping: async (req, res) => {
         try {
             const { id } = req.params;
-            const { sensor_type, sensor_group, customer_id, device_id, status } = req.body;
+            const { sensor_type, sensor_group, customer_id, device_id,fine_amount,frequency,frequency_per,warning,warning_per,penalty,penalty_per,reset_type,organization_id,status, latitude, longitude } = req.body;
             const modified_by = req.user ? req.user.id : req.body.modified_by;
 
             if (!id) {
@@ -370,6 +392,15 @@ module.exports = {
                     sensor_group,
                     customer_id,
                     device_id,
+                    fine_amount,
+                    frequency,
+                    frequency_per,
+                    warning,
+                    warning_per,
+                    penalty,
+                    penalty_per,
+                    reset_type,
+                    organization_id,
                     status: status || 'active',
                     modified_by
                 };
@@ -388,6 +419,18 @@ module.exports = {
                         return res.status(404).json({
                             success: false,
                             message: 'Sensor group mapping not found or could not be updated'
+                        });
+                    }
+
+                    // Update device coordinates if provided
+                    if (latitude && longitude) {
+                        devicesModel.updateDeviceCoordinates(device_id, latitude, longitude, modified_by, (coordError, coordUpdated) => {
+                            if (coordError) {
+                                errorlog.error('Error updating device coordinates:', coordError);
+                                // Don't fail the entire request, just log the error
+                            } else if (coordUpdated) {
+                                successlog.info(`Device coordinates updated for device ID: ${device_id}`);
+                            }
                         });
                     }
 
@@ -791,7 +834,8 @@ module.exports = {
     // Get all parameters for all groups
     getAllGroupParameters: async (req, res) => {
         try {
-            sensorGroupMappingModel.getAllGroupParameters((error, results) => {
+            console.log(req.body)
+            sensorGroupMappingModel.getAllGroupParameters(req.body,(error, results) => {
                 if (error) {
                     errorlog.error('Error fetching all group parameters:', error);
                     return res.status(500).json({

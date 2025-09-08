@@ -2,9 +2,9 @@ const db = require('../config/db');
 
 module.exports = {
     // Get all sensors with parameters
-    getAllSensorGroups: (callback) => {
+    getAllSensorGroups: (organization, callback) => {
         const query = `
-            SELECT s.*, 
+            SELECT s.*, se.sensortype AS sensor_name ,
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
@@ -19,11 +19,12 @@ module.exports = {
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
             LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
-            WHERE s.is_deleted = 0
+            LEFT JOIN tbl_sensors se ON se.id = s.sensor_type
+            WHERE s.is_deleted = 0 and s.organization_id = ?
             GROUP BY s.id
             ORDER BY s.created_on DESC
         `;
-        db.query(query, (error, results) => {
+        db.query(query, [organization], (error, results) => {
             if (error) {
                 return callback(error, null);
             }
@@ -44,7 +45,7 @@ module.exports = {
     // Get sensor by ID with parameters
     getSensorById: (id, callback) => {
         const query = `
-            SELECT s.*, 
+            SELECT s.*, se.sensortype AS sensor_name ,
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
@@ -59,6 +60,7 @@ module.exports = {
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
             LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
+            LEFT JOIN tbl_sensors se ON se.id = s.sensor_type
             WHERE s.id = ? AND s.is_deleted = 0
             GROUP BY s.id
         `;
@@ -85,7 +87,7 @@ module.exports = {
     // Get sensors by type
     getSensorsByType: (sensorType, callback) => {
         const query = `
-            SELECT s.*, 
+            SELECT s.*, se.sensortype AS sensor_name ,
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
@@ -100,6 +102,7 @@ module.exports = {
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
             LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
+            LEFT JOIN tbl_sensors se ON se.id = s.sensor_type
             WHERE s.sensortype = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -125,7 +128,7 @@ module.exports = {
     // Get sensors by status
     getSensorsByStatus: (status, callback) => {
         const query = `
-            SELECT s.*, 
+            SELECT s.*, se.sensortype AS sensor_name ,
                    GROUP_CONCAT(
                        JSON_OBJECT(
                            'id', sp.id,
@@ -140,6 +143,7 @@ module.exports = {
             FROM tbl_sensor_group s
             LEFT JOIN tbl_sensor_group_parameters sp ON s.id = sp.sensor_group_id
             LEFT JOIN tbl_sensor_parameters sep ON sp.sensor_parameter = sep.id
+            LEFT JOIN tbl_sensors se ON se.id = s.sensor_type
             WHERE s.status = ? AND s.is_deleted = 0
             GROUP BY s.id
             ORDER BY s.created_on DESC
@@ -166,12 +170,13 @@ module.exports = {
     createSensorGroup: (sensorData, callback) => {
         const query = `
             INSERT INTO tbl_sensor_group (
-                sensor_type,sensor_group_name, status, created_by, created_on
-            ) VALUES (?, ?, ?, ?, NOW())
+                sensor_type,sensor_group_name, organization_id,status, created_by, created_on
+            ) VALUES (?, ?, ?, ?, ?, NOW())
         `;
         const values = [
             sensorData.sensor_type,
             sensorData.sensor_group_name,
+            sensorData.organization_id,
             sensorData.status || 'active',
             sensorData.created_by
         ];
@@ -229,12 +234,13 @@ module.exports = {
                     // Create sensor group
                     const sensorGroupQuery = `
                         INSERT INTO tbl_sensor_group (
-                            sensor_type, sensor_group_name, status, created_by, created_on
-                        ) VALUES (?, ?, ?, ?, NOW())
+                            sensor_type, sensor_group_name, organization_id, status, created_by, created_on
+                        ) VALUES (?, ?, ?, ?, ?, NOW())
                     `;
                     const sensorValues = [
                         sensorData.sensor_type,
                         sensorData.sensor_group_name,
+                        sensorData.organization_id,
                         sensorData.status || 'active',
                         sensorData.created_by
                     ];

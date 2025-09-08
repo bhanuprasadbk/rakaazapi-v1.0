@@ -8,14 +8,30 @@ module.exports = {
         const page = body.page || 1;
         const offset = (page - 1) * limit;
         const search = body.search || '';
+        const organization = body.organization;
+        const userid = body.userid;
 
         if (isNaN(offset) || isNaN(limit) || offset < 0 || limit <= 0) {
             return callback(new Error('Invalid pagination parameters'), null);
         }
 
+        // Build base condition with userid and organization filters
+        let baseCondition = 'WHERE c.is_deleted = 0 AND c.role_id = 3';
+        let queryParams = [];
+
+        if (userid) {
+            baseCondition += ' AND c.created_by = ?';
+            queryParams.push(userid);
+        }
+
+        if (organization) {
+            baseCondition += ' AND c.customer_admin_org = ?';
+            queryParams.push(organization);
+        }
+
         // Build search condition
         const searchCondition = `
-        WHERE c.customer_id LIKE ? 
+        AND (c.customer_id LIKE ? 
            OR c.organization_name LIKE ? 
            OR c.email LIKE ? 
            OR c.contact_number LIKE ?
@@ -24,8 +40,7 @@ module.exports = {
            OR c.address LIKE ?
            OR co.name LIKE ?
            OR s.name LIKE ?
-           OR ci.name LIKE ?
-           AND c.is_deleted = 0
+           OR ci.name LIKE ?)
     `;
 
         const searchParams = Array(10).fill(`%${search}%`); // 10 LIKE placeholders
@@ -43,13 +58,14 @@ module.exports = {
         LEFT JOIN tbl_states s ON c.state_id = s.id
         LEFT JOIN tbl_cities ci ON c.city_id = ci.id
         LEFT JOIN tbl_subscriptions sub ON c.plan_id =  sub.id
-        ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 3'}
+        ${baseCondition}
+        ${search ? searchCondition : ''}
         ORDER BY c.organization_name
         LIMIT ? OFFSET ?`;
 
         console.log(query);
 
-        db.query(query, [...(search ? searchParams : []), limit, offset], (error, results) => {
+        db.query(query, [...queryParams, ...(search ? searchParams : []), limit, offset], (error, results) => {
             if (error) {
                 return callback(error, null);
             }
@@ -63,10 +79,11 @@ module.exports = {
             LEFT JOIN tbl_states s ON c.state_id = s.id
             LEFT JOIN tbl_cities ci ON c.city_id = ci.id
             LEFT JOIN tbl_subscriptions sub ON c.plan_id =  sub.id
-            ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 3'}
+            ${baseCondition}
+            ${search ? searchCondition : ''}
         `;
 
-            db.query(countQuery, search ? searchParams : [], (countErr, countResults) => {
+            db.query(countQuery, [...queryParams, ...(search ? searchParams : [])], (countErr, countResults) => {
                 if (countErr) {
                     return callback(countErr, null);
                 }
@@ -148,8 +165,8 @@ module.exports = {
             INSERT INTO tbl_customers (
                 customer_id, organization_name, contact_person_name, customer_name, 
                 email, contact_number, contact_object ,customer_type, currency,plan_id,
-                address, country_id, state_id, city_id, created_by,role_id
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                address, country_id, state_id, city_id, created_by,role_id,customer_admin_org
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
             const customerValues = [
@@ -168,7 +185,8 @@ module.exports = {
                 customerData.state_id,
                 customerData.city_id,
                 customerData.created_by,
-                customerData.roleid
+                customerData.roleid,
+                customerData.organization
             ];
 
             db.query(customerQuery, customerValues, (customerErr, customerResults) => {
@@ -300,6 +318,119 @@ module.exports = {
                 return callback(error, null);
             }
             return callback(null, results);
+        });
+    },
+
+    // Get customers by organization of Customer Admin
+    getCustomersByOrganization: (body, callback) => {
+        const limit = body.limit || 10;
+        const page = body.page || 1;
+        const offset = (page - 1) * limit;
+        const search = body.search || '';
+        const organizationId = body.organization_id;
+        const customerAdminId = body.customer_admin_id;
+
+        if (isNaN(offset) || isNaN(limit) || offset < 0 || limit <= 0) {
+            return callback(new Error('Invalid pagination parameters'), null);
+        }
+
+        if (!organizationId && !customerAdminId) {
+            return callback(new Error('Either organization_id or customer_admin_id is required'), null);
+        }
+
+        // Build base condition
+        let baseCondition = 'WHERE c.is_deleted = 0 AND c.role_id = 3';
+        let queryParams = [];
+
+        if (customerAdminId) {
+            // Get organization from customer admin
+            baseCondition += ` AND EXISTS (
+                SELECT 1 FROM tbl_customer_admins ca 
+                WHERE ca.id = ? AND ca.organization_name = c.organization_name
+            )`;
+            queryParams.push(customerAdminId);
+        } else if (organizationId) {
+            // Get organization name from organization ID
+            baseCondition += ` AND EXISTS (
+                SELECT 1 FROM tbl_organizations o 
+                WHERE o.id = ? AND o.Organization = c.organization_name
+            )`;
+            queryParams.push(organizationId);
+        }
+
+        // Build search condition
+        const searchCondition = `
+        AND (c.customer_id LIKE ? 
+           OR c.organization_name LIKE ? 
+           OR c.email LIKE ? 
+           OR c.contact_number LIKE ?
+           OR c.customer_name LIKE ?
+           OR cat.cust_type LIKE ?
+           OR c.address LIKE ?
+           OR co.name LIKE ?
+           OR s.name LIKE ?
+           OR ci.name LIKE ?)
+    `;
+
+        const searchParams = Array(10).fill(`%${search}%`); // 10 LIKE placeholders
+
+        const query = `
+        SELECT c.*, 
+               cat.customer_type as customer_type_name,
+               co.name as country_name,
+               s.name as state_name,
+               ci.name as city_name,
+               sub.plan_name as plan_name
+        FROM tbl_customers c
+        LEFT JOIN tbl_customer_type cat ON c.customer_type = cat.id
+        LEFT JOIN tbl_countries co ON c.country_id = co.id
+        LEFT JOIN tbl_states s ON c.state_id = s.id
+        LEFT JOIN tbl_cities ci ON c.city_id = ci.id
+        LEFT JOIN tbl_subscriptions sub ON c.plan_id = sub.id
+        ${baseCondition}
+        ${search ? searchCondition : ''}
+        ORDER BY c.organization_name
+        LIMIT ? OFFSET ?`;
+
+        console.log('Query:', query);
+        console.log('Params:', [...queryParams, ...(search ? searchParams : []), limit, offset]);
+
+        db.query(query, [...queryParams, ...(search ? searchParams : []), limit, offset], (error, results) => {
+            if (error) {
+                return callback(error, null);
+            }
+
+            // Count query with same filters
+            const countQuery = `
+            SELECT COUNT(*) as total 
+            FROM tbl_customers c
+            LEFT JOIN tbl_customer_type cat ON c.customer_type = cat.id
+            LEFT JOIN tbl_countries co ON c.country_id = co.id
+            LEFT JOIN tbl_states s ON c.state_id = s.id
+            LEFT JOIN tbl_cities ci ON c.city_id = ci.id
+            LEFT JOIN tbl_subscriptions sub ON c.plan_id = sub.id
+            ${baseCondition}
+            ${search ? searchCondition : ''}
+        `;
+
+            db.query(countQuery, [...queryParams, ...(search ? searchParams : [])], (countErr, countResults) => {
+                if (countErr) {
+                    return callback(countErr, null);
+                }
+
+                const total = countResults[0].total;
+                const totalPages = Math.ceil(total / limit);
+
+                return callback(null, {
+                    data: results,
+                    pagination: {
+                        page,
+                        limit,
+                        total,
+                        totalPages
+                    }
+                });
+            });
         });
     }
 }; 

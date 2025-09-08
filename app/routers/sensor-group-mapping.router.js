@@ -5,7 +5,7 @@ module.exports = app => {
     // Protected routes (authentication required)
     
     // GET routes
-    app.get('/api/sensor-group-mappings', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllSensorGroupMappings);
+    app.post('/api/get-sensor-group-mappings', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllSensorGroupMappings);
     app.get('/api/sensor-group-mappings/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupMappingById);
     app.get('/api/sensor-group-mappings/customer/:customerId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupMappingsByCustomer);
     app.get('/api/sensor-group-mappings/device/:deviceId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupMappingsByDevice);
@@ -37,7 +37,7 @@ module.exports = app => {
     app.get('/api/sensor-groups/status/:status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getSensorGroupsByStatus);
     
     // Parameters routes
-    app.get('/api/sensor-group-parameters', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllGroupParameters);
+    app.post('/api/sensor-group-parameters', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getAllGroupParameters);
     app.get('/api/sensor-group-parameters/group/:sensorGroupId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getParametersBySensorGroup);
     app.get('/api/sensor-group-parameters/sensor-type/:sensorTypeId', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorGroupMappingController.getParametersBySensorType);
     

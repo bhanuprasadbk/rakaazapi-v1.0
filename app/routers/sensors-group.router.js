@@ -5,7 +5,7 @@ module.exports = app => {
     // Protected routes (authentication required)
     
     // GET routes
-    app.get('/api/sensors-group', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorsController.getAllSensorGroups);
+    app.post('/api/get-sensors-group', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorsController.getAllSensorGroups);
     app.get('/api/sensors-group/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorsController.getSensorGroupById);
     app.get('/api/sensors-group/type/:sensortype', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorsController.getSensorGroupsByType);
     app.get('/api/sensors-group/status/:status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), sensorsController.getSensorGroupsByStatus);

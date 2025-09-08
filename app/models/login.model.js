@@ -6,7 +6,7 @@ module.exports = {
     // Authenticate user login
     authenticateUser: (username, password, callback) => {
         const query = `
-            SELECT u.*, r.name as role_name, c.organization_name as customer_name
+            SELECT u.*, r.name as role_name, c.organization_name as organization_name,c.organization_id as organization
             FROM tbl_users u
             LEFT JOIN tbl_roles r ON u.role_id = r.id
             LEFT JOIN tbl_customer_admins c ON u.customer_id = c.id

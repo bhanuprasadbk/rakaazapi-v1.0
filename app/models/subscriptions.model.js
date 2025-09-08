@@ -2,17 +2,17 @@ const db = require('../config/db');
 
 module.exports = {
     // Get all subscriptions with descriptions
-    getAllSubscriptions: (customer_id,callback) => {
+    getAllSubscriptions: (customer_id,organization,callback) => {
         const query = `
             SELECT s.*, 
                    GROUP_CONCAT(sd.description SEPARATOR '||') as descriptions
             FROM tbl_subscriptions s
             LEFT JOIN tbl_subscription_desc sd ON s.id = sd.subscription_id
-            WHERE s.is_deleted = 0 AND s.status = 'active' and s.created_by = ?
+            WHERE s.is_deleted = 0 AND s.status = 'active' and s.created_by = ? and organization_id = ?
             GROUP BY s.id
             ORDER BY s.created_on DESC
         `;
-        db.query(query, [customer_id], (error, results) => {
+        db.query(query, [customer_id,organization], (error, results) => {
             if (error) {
                 return callback(error, null);
             }
@@ -128,8 +128,8 @@ module.exports = {
                 const subscriptionQuery = `
                     INSERT INTO tbl_subscriptions (
                         plan_name, currency, price, period, payment_provider, 
-                        status, created_by, modified_by
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        status, created_by, modified_by,organization_id
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
                 `;
                 const subscriptionValues = [
                     subscriptionFields.plan_name,
@@ -139,7 +139,8 @@ module.exports = {
                     subscriptionFields.payment_provider,
                     subscriptionFields.status || 'active',
                     subscriptionFields.created_by,
-                    subscriptionFields.modified_by || subscriptionFields.created_by
+                    subscriptionFields.modified_by || subscriptionFields.created_by,
+                    subscriptionFields.organization_id
                 ];
                 
                 connection.query(subscriptionQuery, subscriptionValues, (error, results) => {

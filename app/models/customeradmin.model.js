@@ -118,111 +118,159 @@ module.exports = {
     createCustomerAdmin: (customerData, callback) => {
         const prefix = customerData.roleid === 2 ? 'CA' : customerData.roleid === 3 ? 'CUS' : 'GEN';
 
-        const getLastCustomerIdQuery = `
-        SELECT customer_id FROM tbl_customer_admins 
-        WHERE customer_id LIKE '${prefix}%' 
-        ORDER BY id DESC LIMIT 1
-    `;
-
-        db.query(getLastCustomerIdQuery, async (err, results) => {
-            if (err) {
-                return callback(err, null);
-            }
-
-            let nextNumber = 1;
-
-            if (results.length > 0) {
-                const lastId = results[0].customer_id; // e.g., CA00012
-                const numberPart = parseInt(lastId.replace(prefix, '')) || 0;
-                nextNumber = numberPart + 1;
-            }
-
-            const newCustomerId = `${prefix}${nextNumber.toString().padStart(5, '0')}`;
-
-            const customerQuery = `
-            INSERT INTO tbl_customer_admins (
-                customer_id, organization_name, contact_person_name, customer_admin_name, 
-                email, contact_number, contact_object ,customer_admin_type, currency, 
-                address, country_id, state_id, city_id, created_by
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        // First, check if organization already exists
+        const checkOrganizationQuery = `
+            SELECT id FROM tbl_organizations 
+            WHERE Organization = ? AND is_deleted = 0
         `;
 
-            const customerValues = [
-                newCustomerId,
-                customerData.organization_name,
-                customerData.contact_person_name,
-                customerData.customer_admin_name,
-                customerData.email,
-                customerData.contact_number,
-                customerData.contact_object || '',
-                customerData.customer_admin_type,
-                customerData.currency || 'USD',
-                customerData.address,
-                customerData.country_id,
-                customerData.state_id,
-                customerData.city_id,
-                customerData.created_by
-            ];
+        db.query(checkOrganizationQuery, [customerData.organization_name], (checkErr, checkResults) => {
+            if (checkErr) {
+                return callback(checkErr, null);
+            }
 
-            db.query(customerQuery, customerValues, (customerErr, customerResults) => {
-                if (customerErr) {
-                    return callback(customerErr, null);
-                }
-                const customerId = customerResults.insertId;
+            let organizationId;
 
-                const userQuery = `
-                INSERT INTO tbl_users (
-                    name, email, username, password_hash, role_id, customer_id, created_by
-                ) VALUES (?, ?, ?, ?, ?, ?, ?)
-            `;
-                const userValues = [
-                    customerData.customer_admin_name,
-                    customerData.email,
-                    customerData.username,
-                    customerData.password, // hash beforehand
-                    customerData.roleid,
-                    customerId,
+            if (checkResults.length > 0) {
+                // Organization exists, use existing ID
+                organizationId = checkResults[0].id;
+                createCustomerAdminWithOrgId(organizationId);
+            } else {
+                // Organization doesn't exist, create new one
+                const organizationQuery = `
+                    INSERT INTO tbl_organizations (
+                        Organization, status, created_by, created_on
+                    ) VALUES (?, ?, ?, NOW())
+                `;
+
+                const organizationValues = [
+                    customerData.organization_name,
+                    'Active',
                     customerData.created_by
                 ];
 
-                db.query(userQuery, userValues, (userErr, userResults) => {
-                    if (userErr) {
-                        return callback(userErr, null);
+                db.query(organizationQuery, organizationValues, (orgErr, orgResults) => {
+                    if (orgErr) {
+                        return callback(orgErr, null);
+                    }
+                    organizationId = orgResults.insertId;
+                    createCustomerAdminWithOrgId(organizationId);
+                });
+            }
+
+            function createCustomerAdminWithOrgId(organizationId) {
+                const getLastCustomerIdQuery = `
+                SELECT customer_id FROM tbl_customer_admins 
+                WHERE customer_id LIKE '${prefix}%' 
+                ORDER BY id DESC LIMIT 1
+            `;
+
+                db.query(getLastCustomerIdQuery, async (err, results) => {
+                    if (err) {
+                        return callback(err, null);
                     }
 
-                    const getCustomerData = `
-                    SELECT 
-                        c.customer_id, c.organization_name, c.contact_person_name, c.customer_admin_name, 
-                        c.email, c.contact_number, c.address, 
-                        country.name AS country_name, 
-                        state.name AS state_name, 
-                        city.name AS city_name 
-                    FROM tbl_customer_admins c 
-                    LEFT JOIN tbl_countries country ON country.id = c.country_id
-                    LEFT JOIN tbl_states state ON state.id = c.state_id
-                    LEFT JOIN tbl_cities city ON city.id = c.city_id
-                    WHERE c.customer_id = ?
-                `;
+                    let nextNumber = 1;
 
-                    db.query(getCustomerData, [newCustomerId], (getCustomerErr, customerResponse) => {
-                        if (getCustomerErr) {
-                            return callback(getCustomerErr, null);
+                    if (results.length > 0) {
+                        const lastId = results[0].customer_id; // e.g., CA00012
+                        const numberPart = parseInt(lastId.replace(prefix, '')) || 0;
+                        nextNumber = numberPart + 1;
+                    }
+
+                    const newCustomerId = `${prefix}${nextNumber.toString().padStart(5, '0')}`;
+
+                                         const customerQuery = `
+                     INSERT INTO tbl_customer_admins (
+                         customer_id,role_id,organization_id, organization_name, contact_person_name, customer_admin_name, 
+                         email, contact_number, contact_object, customer_admin_type, currency, 
+                         address, country_id, state_id, city_id, created_by
+                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 `;
+
+                     const customerValues = [
+                         newCustomerId,
+                         customerData.roleid,
+                         organizationId,
+                         customerData.organization_name,
+                         customerData.contact_person_name,
+                         customerData.customer_admin_name,
+                         customerData.email,
+                         customerData.contact_number,
+                         customerData.contact_object || '',
+                         customerData.customer_admin_type,
+                         customerData.currency || 'USD',
+                         customerData.address,
+                         customerData.country_id,
+                         customerData.state_id,
+                         customerData.city_id,
+                         customerData.created_by
+                     ];
+
+                    db.query(customerQuery, customerValues, (customerErr, customerResults) => {
+                        if (customerErr) {
+                            return callback(customerErr, null);
                         }
+                        const customerId = customerResults.insertId;
 
-                        if (customerResponse.length === 0) {
-                            return callback(new Error('Customer not found'), null);
-                        }
+                        const userQuery = `
+                        INSERT INTO tbl_users (
+                            name, email, username, password_hash, role_id, customer_id, created_by
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    `;
+                        const userValues = [
+                            customerData.customer_admin_name,
+                            customerData.email,
+                            customerData.username,
+                            customerData.password, // hash beforehand
+                            customerData.roleid,
+                            customerId,
+                            customerData.created_by
+                        ];
 
-                        return callback(null, {
-                            customer_id: newCustomerId,
-                            user_id: userResults.insertId,
-                            customerResponse: customerResponse[0]
+                        db.query(userQuery, userValues, (userErr, userResults) => {
+                            if (userErr) {
+                                return callback(userErr, null);
+                            }
+
+                            const getCustomerData = `
+                            SELECT 
+                                c.customer_id, c.organization_id, c.organization_name, c.contact_person_name, c.customer_admin_name, 
+                                c.email, c.contact_number, c.address, 
+                                o.Organization as organization_name_from_org,
+                                country.name AS country_name, 
+                                state.name AS state_name, 
+                                city.name AS city_name 
+                            FROM tbl_customer_admins c 
+                            LEFT JOIN tbl_organizations o ON o.id = c.organization_id
+                            LEFT JOIN tbl_countries country ON country.id = c.country_id
+                            LEFT JOIN tbl_states state ON state.id = c.state_id
+                            LEFT JOIN tbl_cities city ON city.id = c.city_id
+                            WHERE c.customer_id = ?
+                        `;
+
+                            db.query(getCustomerData, [newCustomerId], (getCustomerErr, customerResponse) => {
+                                if (getCustomerErr) {
+                                    return callback(getCustomerErr, null);
+                                }
+
+                                if (customerResponse.length === 0) {
+                                    return callback(new Error('Customer not found'), null);
+                                }
+
+                                return callback(null, {
+                                    customer_id: newCustomerId,
+                                    organization_id: organizationId,
+                                    user_id: userResults.insertId,
+                                    customerResponse: customerResponse[0]
+                                });
+                            });
                         });
                     });
                 });
-            });
-        });
-    },
+                         }
+         });
+     },
 
     // Update customer admin
     updateCustomerAdmin: (id, customerData, callback) => {

@@ -7,8 +7,8 @@ module.exports = {
     // Get all subscriptions
     getAllSubscriptions: async (req, res) => {
         try {
-            const { customer_id } = req.body;
-            subscriptionsModel.getAllSubscriptions(customer_id, (error, results) => {
+            const { customer_id ,organization} = req.body;
+            subscriptionsModel.getAllSubscriptions(customer_id,organization, (error, results) => {
                 if (error) {
                     errorlog.error('Error fetching subscriptions:', error);
                     return res.status(500).json({
@@ -162,14 +162,14 @@ module.exports = {
             console.log("createSubscription",req.body);
             const {
                 plan_name, currency, price, period, payment_provider, 
-                status, descriptions, created_by, modified_by
+                status, descriptions, created_by, modified_by,organization_id
             } = req.body;
             
 
-            if (!plan_name || !currency || !price || !period || !payment_provider || !created_by) {
+            if (!plan_name || !currency || !price || !period || !payment_provider || !created_by || !organization_id) {
                 return res.status(400).json({
                     success: false,
-                    message: 'plan_name, currency, price, period, payment_provider, and created_by are required'
+                    message: 'plan_name, currency, price, period, payment_provider, created_by and organization are required'
                 });
             }
 
@@ -182,7 +182,8 @@ module.exports = {
                 status,
                 descriptions: descriptions || [],
                 created_by,
-                modified_by
+                modified_by,
+                organization_id
             };
             
             subscriptionsModel.createSubscription(subscriptionData, (error, insertId) => {
@@ -206,7 +207,8 @@ module.exports = {
                         period, 
                         payment_provider, 
                         status: status || 'active',
-                        descriptions: descriptions || []
+                        descriptions: descriptions || [],
+                        organization_id:organization_id
                     }
                 });
             });
@@ -226,7 +228,7 @@ module.exports = {
             const { id } = req.params;
             const {
                 plan_name, currency, price, period, payment_provider, 
-                status, descriptions, modified_by
+                status, descriptions, modified_by,organization_id
             } = req.body;
             
             if (!id) {
@@ -236,10 +238,10 @@ module.exports = {
                 });
             }
 
-            if (!plan_name || !currency || !price || !period || !payment_provider || !modified_by) {
+            if (!plan_name || !currency || !price || !period || !payment_provider || !modified_by || !organization_id) {
                 return res.status(400).json({
                     success: false,
-                    message: 'plan_name, currency, price, period, payment_provider, and modified_by are required'
+                    message: 'plan_name, currency, price, period, payment_provider, modified_by and organization are required'
                 });
             }
 
@@ -251,7 +253,8 @@ module.exports = {
                 payment_provider,
                 status,
                 descriptions: descriptions || [],
-                modified_by
+                modified_by,
+                organization_id
             };
             
             subscriptionsModel.updateSubscription(id, subscriptionData, (error, updated) => {
@@ -283,7 +286,8 @@ module.exports = {
                         period, 
                         payment_provider, 
                         status,
-                        descriptions: descriptions || []
+                        descriptions: descriptions || [],
+                        organization_id:organization_id
                     }
                 });
             });

@@ -26,9 +26,10 @@ module.exports = {
         const searchParams = Array(6).fill(`%${search}%`); // 6 LIKE placeholders
 
         const query = `
-            SELECT d.*, s.sensortype as sensor_type_name
+            SELECT d.*, s.sensortype as sensor_type_name,c.customer_admin_name as customer_admin_name
             FROM tbl_devices d
             LEFT JOIN tbl_sensors s ON d.sensortype = s.id
+            LEFT JOIN tbl_customer_admins c ON d.customeradmin = c.id
             ${search ? searchCondition : 'WHERE d.is_deleted = 0'}
             ORDER BY d.created_on DESC
             LIMIT ? OFFSET ?
@@ -44,6 +45,7 @@ module.exports = {
             SELECT COUNT(*) as total 
             FROM tbl_devices d
             LEFT JOIN tbl_sensors s ON d.sensortype = s.id
+            LEFT JOIN tbl_customer_admins c ON d.customeradmin = c.id
             ${search ? searchCondition : 'WHERE d.is_deleted = 0'}
         `;
 
@@ -149,8 +151,8 @@ module.exports = {
         const query = `
             INSERT INTO tbl_devices (
                 deviceId, devicename, sensortype, sensorparameters, devicemake, devicemodel, 
-                status, created_by, created_on
-            ) VALUES (?, ?, ?, ?, ?, ?,?, ?, NOW())
+                status, device_latitude, device_longitude, created_by, created_on
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         `;
         const values = [
             deviceData.deviceId,
@@ -160,6 +162,8 @@ module.exports = {
             deviceData.devicemake,
             deviceData.devicemodel,
             deviceData.status || 'Active',
+            deviceData.latitude || null,
+            deviceData.longitude || null,
             deviceData.created_by
         ];
         
@@ -176,7 +180,7 @@ module.exports = {
         const query = `
             UPDATE tbl_devices SET 
                 deviceId = ?, devicename = ?, sensortype = ?, sensorparameters = ?, devicemake = ?, 
-                devicemodel = ?, status = ?, modified_by = ?, modified_on = NOW()
+                devicemodel = ?, status = ?, device_latitude = ?, device_longitude = ?, modified_by = ?, modified_on = NOW()
             WHERE id = ? AND is_deleted = 0
         `;
         const values = [
@@ -187,6 +191,8 @@ module.exports = {
             deviceData.devicemake,
             deviceData.devicemodel,
             deviceData.status,
+            deviceData.latitude || null,
+            deviceData.longitude || null,
             deviceData.modified_by,
             id
         ];
@@ -222,6 +228,21 @@ module.exports = {
             WHERE id = ? AND is_deleted = 0
         `;
         db.query(query, [status, modifiedBy, id], (error, results) => {
+            if (error) {
+                return callback(error, null);
+            }
+            return callback(null, results.affectedRows > 0);
+        });
+    },
+
+    // Update device coordinates
+    updateDeviceCoordinates: (id, latitude, longitude, modifiedBy, callback) => {
+        const query = `
+            UPDATE tbl_devices SET 
+                device_latitude = ?, device_longitude = ?, modified_by = ?, modified_on = NOW()
+            WHERE id = ? AND is_deleted = 0
+        `;
+        db.query(query, [latitude, longitude, modifiedBy, id], (error, results) => {
             if (error) {
                 return callback(error, null);
             }
@@ -377,7 +398,7 @@ module.exports = {
         JOIN tbl_customer_admins c ON d.customeradmin = c.id
         WHERE FIND_IN_SET(s.id, d.sensortype) > 0
           AND d.is_deleted = 0
-          AND c.id = 1
+          AND c.id = ?
     ) AS devices,
 
     -- Aggregate parameters per sensor
@@ -408,7 +429,7 @@ WHERE EXISTS (
 )
 ORDER BY s.id
         `;
-        db.query(query, [customer_id], (error, results) => {
+        db.query(query, [customer_id,customer_id], (error, results) => {
             if (error) return callback(error, null);
             return callback(null, {data: results});
         });

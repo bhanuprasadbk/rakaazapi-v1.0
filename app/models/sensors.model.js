@@ -3,7 +3,14 @@ const db = require('../config/db');
 module.exports = {
     // Get all sensors with parameters
     getAllSensors: (callback) => {
-        const query = `
+
+
+        db.query('SET SESSION group_concat_max_len = 1000000;', (error) => {
+            if (error) {
+                return callback(error, null);
+            }
+
+            const query = `
             SELECT s.*, 
                    GROUP_CONCAT(
                        JSON_OBJECT(
@@ -27,8 +34,10 @@ module.exports = {
                 return callback(error, null);
             }
             
+           // console.log(results);
             // Parse parameters JSON for each sensor
             results.forEach(sensor => {
+                console.log(sensor.parameters);
                 if (sensor.parameters) {
                     sensor.parameters = JSON.parse(`[${sensor.parameters}]`);
                 } else {
@@ -38,6 +47,8 @@ module.exports = {
             
             return callback(null, results);
         });
+        });
+       
     },
 
     // Get sensor by ID with parameters

@@ -70,7 +70,8 @@ module.exports = {
                             username: user.username,
                             email: user.email,
                             role_name: user.role_name,
-                            customer_name: user.customer_name
+                            organization_name: user.organization_name,
+                            organization_id: user.organization
                         },
                         token: token,
                         refreshToken: refreshToken,
@@ -124,6 +125,7 @@ module.exports = {
                     username: customer.username,
                     email: customer.email,
                     organization_name: customer.organization_name,
+                    organization_id:customer.organization_id,
                     customer_admin_name: customer.customer_admin_name,
                     customer_admin_type: customer.cust_admin_type,
                     type: 'customer'
@@ -147,6 +149,7 @@ module.exports = {
                             id: customer.id,
                             customer_id: customer.customer_id,
                             organization_name: customer.organization_name,
+                            organization_id:customer.organization,
                             customer_admin_name: customer.customer_admin_name,
                             username: customer.username,
                             email: customer.email,

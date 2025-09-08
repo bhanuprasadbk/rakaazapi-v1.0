@@ -2,22 +2,18 @@ const db = require('../config/db');
 
 module.exports = {
     // Get all sensor group mappings
-    getAllSensorGroupMappings: (callback) => {
+    getAllSensorGroupMappings: (organization_id, callback) => {
         const query = `
-            SELECT sgm.*, 
-                   s.sensortype as sensor_type_name,
-                   sg.sensor_group_name as sensor_group_name,
-                   c.customer_name,
-                   d.deviceName as device_name
-            FROM tbl_sensor_group_mapping sgm
-            LEFT JOIN tbl_sensors s ON sgm.sensor_type = s.id
-            LEFT JOIN tbl_sensor_group sg ON sgm.sensor_group = sg.id
-            LEFT JOIN tbl_customers c ON sgm.customer_id = c.id
-            LEFT JOIN tbl_devices d ON sgm.device_id = d.id
-            WHERE sgm.is_deleted = 0
-            ORDER BY sgm.created_on DESC
+            SELECT sgm.id,d.deviceId,c.customer_name,sg.sensor_group_name,s.sensortype,d.devicemake, d.devicemodel,sgm.fine_amount,sgm.penalty,sgm.penalty_per,
+sgm.frequency,sgm.frequency_per,sgm.warning,sgm.warning_per,sgm.reset_type,d.device_latitude,d.device_longitude FROM tbl_sensor_group_mapping sgm
+LEFT JOIN tbl_sensors s ON sgm.sensor_type = s.id
+LEFT JOIN tbl_sensor_group sg ON sg.id = sgm.sensor_group
+LEFT JOIN tbl_devices d ON d.id = sgm.device_id
+LEFT JOIN tbl_customers c ON c.id=sgm.customer_id
+WHERE sgm.is_deleted = 0 AND sgm.organization_id = ?
+
         `;
-        db.query(query, (error, results) => {
+        db.query(query, [organization_id], (error, results) => {
             if (error) {
                 return callback(error, null);
             }
@@ -32,7 +28,7 @@ module.exports = {
                    s.sensortype as sensor_type_name,
                    sg.sensor_group_name as sensor_group_name,
                    c.customer_name,
-                   d.deviceName as device_name
+                   d.deviceName as device_name,d.devicemake as device_make,d.devicemodel as device_model,d.device_longitude,d.device_latitude
             FROM tbl_sensor_group_mapping sgm
             LEFT JOIN tbl_sensors s ON sgm.sensor_type = s.id
             LEFT JOIN tbl_sensor_group sg ON sgm.sensor_group = sg.id
@@ -153,14 +149,23 @@ module.exports = {
     createSensorGroupMapping: (data, callback) => {
         const query = `
             INSERT INTO tbl_sensor_group_mapping 
-            (sensor_type, sensor_group, customer_id, device_id, status, created_by, created_on)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            (sensor_type, sensor_group, customer_id, device_id, fine_amount, frequency, frequency_per, warning, warning_per, penalty, penalty_per, reset_type, organization_id,status, created_by, created_on)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?,?,NOW())
         `;
         const values = [
             data.sensor_type,
             data.sensor_group,
             data.customer_id,
             data.device_id,
+            data.fine_amount,
+            data.frequency,
+            data.frequency_per,
+            data.warning,
+            data.warning_per,
+            data.penalty,
+            data.penalty_per,
+            data.reset_type,
+            data.organization_id,
             data.status || 'active',
             data.created_by
         ];
@@ -176,25 +181,45 @@ module.exports = {
     // Update sensor group mapping
     updateSensorGroupMapping: (id, data, callback) => {
         const query = `
-            UPDATE tbl_sensor_group_mapping 
-            SET sensor_type = ?, 
-                sensor_group = ?, 
-                customer_id = ?, 
-                device_id = ?, 
-                status = ?, 
-                modified_by = ?, 
-                modified_on = NOW()
-            WHERE id = ? AND is_deleted = 0
-        `;
-        const values = [
-            data.sensor_type,
-            data.sensor_group,
-            data.customer_id,
-            data.device_id,
-            data.status,
-            data.modified_by,
-            id
-        ];
+        UPDATE tbl_sensor_group_mapping 
+        SET 
+            sensor_type = ?, 
+            sensor_group = ?, 
+            customer_id = ?, 
+            device_id = ?, 
+            fine_amount = ?, 
+            frequency = ?, 
+            frequency_per = ?, 
+            warning = ?, 
+            warning_per = ?, 
+            penalty = ?, 
+            penalty_per = ?, 
+            reset_type = ?, 
+            organization_id = ?, 
+            status = ?, 
+            modified_by = ?, 
+            modified_on = NOW()
+        WHERE id = ? AND is_deleted = 0
+    `;
+    const values = [
+        data.sensor_type,
+        data.sensor_group,
+        data.customer_id,
+        data.device_id,
+        data.fine_amount,
+        data.frequency,
+        data.frequency_per,
+        data.warning,
+        data.warning_per,
+        data.penalty,
+        data.penalty_per,
+        data.reset_type,
+        data.organization_id,
+        data.status || 'active',
+        data.modified_by,
+        id
+    ];
+
         
         db.query(query, values, (error, results) => {
             if (error) {
@@ -202,7 +227,7 @@ module.exports = {
             }
             return callback(null, results.affectedRows > 0);
         });
-    },
+    },  
 
     // Update sensor group mapping status
     updateSensorGroupMappingStatus: (id, status, modifiedBy, callback) => {
@@ -416,7 +441,8 @@ module.exports = {
     },
 
     // Get all parameters for all groups
-    getAllGroupParameters: (callback) => {
+    getAllGroupParameters: (body, callback) => {
+        const organization_id = body.organization_id;
         const query = `
             SELECT sgp.id, sgp.sensor_group_id, sgp.sensor_parameter, sgp.unit,
                    sgp.min_threshold_limit, sgp.max_threshold_limit,
@@ -426,11 +452,13 @@ module.exports = {
             LEFT JOIN tbl_sensor_group sg ON sgp.sensor_group_id = sg.id
             LEFT JOIN tbl_sensors s ON sg.sensor_type = s.id
             LEFT JOIN tbl_sensor_parameters sep ON sgp.sensor_parameter = sep.id
-            WHERE sg.is_deleted = 0
+            WHERE sg.is_deleted = 0 and sg.organization_id = ?
             ORDER BY s.sensortype ASC, sg.sensor_group_name ASC, sgp.id ASC
         `;
         
-        db.query(query, (error, results) => {
+        db.query(query, [organization_id], (error, results) => {
+
+            console.log(`--------------------${organization_id}`,results);
             if (error) {
                 return callback(error, null);
             }
@@ -492,7 +520,7 @@ module.exports = {
             FROM tbl_sensor_group_parameters sgp
             LEFT JOIN tbl_sensor_group sg ON sgp.sensor_group_id = sg.id
             LEFT JOIN tbl_sensors s ON sg.sensor_type = s.id
-            WHERE sg.sensor_type = ? AND sg.is_deleted = 0
+            WHERE sg.sensor_type = ? AND sgp.is_deleted = 0
             ORDER BY sg.sensor_group_name ASC, sgp.id ASC
         `;
         
@@ -577,77 +605,82 @@ module.exports = {
         });
     },
     getAllCustomersForSensorGroupMapping: (body, callback) => {
-        console.log("getAllCustomersForSensorGroupMapping");
         const limit = body.limit || 10;
         const page = body.page || 1;
         const offset = (page - 1) * limit;
         const search = body.search || '';
-
+        const organization_id = body.organization_id;
+    
         if (isNaN(offset) || isNaN(limit) || offset < 0 || limit <= 0) {
             return callback(new Error('Invalid pagination parameters'), null);
         }
-
-        // Build search condition
+    
         const searchCondition = `
-        WHERE c.customer_id LIKE ? 
-           OR c.organization_name LIKE ? 
-           OR c.email LIKE ? 
-           OR c.contact_number LIKE ?
-           OR c.customer_name LIKE ?
-           OR cat.cust_type LIKE ?
-           OR c.address LIKE ?
-           OR co.name LIKE ?
-           OR s.name LIKE ?
-           OR ci.name LIKE ?
-           AND c.is_deleted = 0
-    `;
-
-        const searchParams = Array(10).fill(`%${search}%`); // 10 LIKE placeholders
-
+            WHERE (
+                c.customer_id LIKE ? 
+                OR c.organization_name LIKE ? 
+                OR c.email LIKE ? 
+                OR c.contact_number LIKE ?
+                OR c.customer_name LIKE ?
+                OR cat.cust_type LIKE ?
+                OR c.address LIKE ?
+                OR co.name LIKE ?
+                OR s.name LIKE ?
+                OR ci.name LIKE ?
+            )
+            AND c.is_deleted = 0 AND c.role_id = 3 AND c.customer_admin_org = ?
+        `;
+    
+        const baseCondition = `
+            WHERE c.is_deleted = 0 AND c.role_id = 3 AND c.customer_admin_org = ?
+        `;
+    
         const query = `
-        SELECT c.*, 
-               cat.customer_type as customer_type_name,
-               co.name as country_name,
-               s.name as state_name,
-               ci.name as city_name,
-               sub.plan_name as plan_name
-        FROM tbl_customers c
-        LEFT JOIN tbl_customer_type cat ON c.customer_type = cat.id
-        LEFT JOIN tbl_countries co ON c.country_id = co.id
-        LEFT JOIN tbl_states s ON c.state_id = s.id
-        LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-        LEFT JOIN tbl_subscriptions sub ON c.plan_id =  sub.id
-        ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 3'}
-        ORDER BY c.organization_name
-        LIMIT ? OFFSET ?`;
-
-        console.log(query);
-
-        db.query(query, [...(search ? searchParams : []), limit, offset], (error, results) => {
-            if (error) {
-                return callback(error, null);
-            }
-
-            // Count query with same search filter
-            const countQuery = `
-            SELECT COUNT(*) as total 
+            SELECT c.*, 
+                   cat.customer_type as customer_type_name,
+                   co.name as country_name,
+                   s.name as state_name,
+                   ci.name as city_name,
+                   sub.plan_name as plan_name
             FROM tbl_customers c
             LEFT JOIN tbl_customer_type cat ON c.customer_type = cat.id
             LEFT JOIN tbl_countries co ON c.country_id = co.id
             LEFT JOIN tbl_states s ON c.state_id = s.id
             LEFT JOIN tbl_cities ci ON c.city_id = ci.id
-            LEFT JOIN tbl_subscriptions sub ON c.plan_id =  sub.id
-            ${search ? searchCondition : 'WHERE c.is_deleted = 0 AND c.role_id = 3'}
+            LEFT JOIN tbl_subscriptions sub ON c.plan_id = sub.id
+            ${search ? searchCondition : baseCondition}
+            ORDER BY c.organization_name
+            LIMIT ? OFFSET ?
         `;
-
-            db.query(countQuery, search ? searchParams : [], (countErr, countResults) => {
-                if (countErr) {
-                    return callback(countErr, null);
-                }
-
+    
+        const queryParams = search
+            ? [...Array(10).fill(`%${search}%`), organization_id, limit, offset]
+            : [organization_id, limit, offset];
+    
+        db.query(query, queryParams, (error, results) => {
+            if (error) return callback(error, null);
+    
+            const countQuery = `
+                SELECT COUNT(*) as total
+                FROM tbl_customers c
+                LEFT JOIN tbl_customer_type cat ON c.customer_type = cat.id
+                LEFT JOIN tbl_countries co ON c.country_id = co.id
+                LEFT JOIN tbl_states s ON c.state_id = s.id
+                LEFT JOIN tbl_cities ci ON c.city_id = ci.id
+                LEFT JOIN tbl_subscriptions sub ON c.plan_id = sub.id
+                ${search ? searchCondition : baseCondition}
+            `;
+    
+            const countParams = search
+                ? [...Array(10).fill(`%${search}%`), organization_id]
+                : [organization_id];
+    
+            db.query(countQuery, countParams, (countErr, countResults) => {
+                if (countErr) return callback(countErr, null);
+    
                 const total = countResults[0].total;
                 const totalPages = Math.ceil(total / limit);
-
+    
                 return callback(null, {
                     data: results,
                     pagination: {
@@ -660,5 +693,6 @@ module.exports = {
             });
         });
     }
+    
 
 };
