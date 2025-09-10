@@ -460,5 +460,51 @@ module.exports = {
                 error: error.message
             });
         }
+    },
+    changePassword: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { password } = req.body;
+            
+            if (!id || !password) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'User ID and password are required'
+    
+                });
+            }
+            
+            usersModel.changePassword(id, password, (error, updated) => {
+                if (error) {
+                    errorlog.error('Error changing password:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error changing password',
+    
+                        error: error.message
+                    });
+                }
+                
+                if (!updated) {
+                    return res.status(404).json({
+                        success: false,
+                        message: 'User not found'
+                    });
+                }
+    
+                successlog.info(`Password changed for user: ${id}`);
+                return res.status(200).json({
+                    success: true,
+                    message: 'Password changed successfully'
+                });
+            });
+        } catch (error) {
+            errorlog.error('Exception in changePassword:', error);
+            return res.status(500).json({
+    
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
     }
 }; 

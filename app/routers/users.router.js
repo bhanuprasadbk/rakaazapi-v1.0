@@ -15,4 +15,5 @@ module.exports = app => {
     app.put('/api/users/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), usersController.updateUser);
     app.delete('/api/users/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), usersController.deleteUser);
     app.patch('/api/users/:id/status', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), usersController.updateUserStatus);
+    app.put('/api/users/:id/change-password', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), usersController.changePassword);
 }; 

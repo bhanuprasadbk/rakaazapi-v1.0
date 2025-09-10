@@ -173,5 +173,16 @@ module.exports = {
             }
             return callback(null, results.affectedRows > 0);
         });
+    },
+
+    //Change Password
+    changePassword: (id, password, callback) => {
+        const query = 'UPDATE tbl_users SET password_hash = ? WHERE customer_id = ?';
+        db.query(query, [password, id], (error, results) => {
+            if (error) {
+                return callback(error, null);
+            }
+            return callback(null, results.affectedRows > 0);
+        });
     }
 }; 
