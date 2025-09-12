@@ -432,5 +432,35 @@ module.exports = {
                 });
             });
         });
+    },
+    // Update customer
+    updateCustomerProfile: (id, customerData, callback) => {
+        const query = `
+            UPDATE tbl_customers SET 
+                organization_name = ?, contact_person_name = ?,
+                email = ?, contact_number = ?,
+                address = ?, country_id = ?, state_id = ?, city_id = ?, modified_by = ?
+            WHERE id = ?
+        `;
+        const values = [
+            customerData.organization_name,
+            customerData.contact_person_name,
+            customerData.email,
+            customerData.contact_number,
+            customerData.address,
+            customerData.country_id,
+            customerData.state_id,
+            customerData.city_id,
+            customerData.modified_by,
+            id
+        ];
+        console.log(values);
+
+        db.query(query, values, (error, results) => {
+            if (error) {
+                return callback(error, null);
+            }
+            return callback(null, results.affectedRows > 0);
+        });
     }
 }; 
