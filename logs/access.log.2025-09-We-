@@ -217,3 +217,24 @@
 {"level":"info","message":"Device mapping list by customer ID fetched successfully"}
 {"level":"info","message":"Device mapping list by customer ID fetched successfully"}
 {"level":"info","message":"Device mapping list by customer ID fetched successfully"}
+{"level":"info","message":"User logged in successfully: testadmin"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Sensor groups fetched successfully"}
+{"level":"info","message":"Sensors fetched successfully"}
+{"level":"info","message":"Sensor group mappings fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Customers fetched successfully"}
+{"level":"info","message":"Currencies fetched successfully"}
+{"level":"info","message":"Countries fetched successfully"}
+{"level":"info","message":"Customer types fetched successfully"}
+{"level":"info","message":"Subscriptions fetched successfully"}
+{"level":"info","message":"User logged in successfully: cteplcust1"}
+{"level":"info","message":"User logged in successfully: saeed"}
+{"level":"info","message":"User logged in successfully: saeed"}
+{"level":"info","message":"User logged in successfully: saeed"}
+{"level":"info","message":"Customer fetched with ID: 9"}
+{"level":"info","message":"User logged in successfully: saeed"}
+{"level":"info","message":"Customer fetched with ID: 9"}
+{"level":"info","message":"Password changed for user: 9"}
+{"level":"info","message":"User logged in successfully: saeed"}
