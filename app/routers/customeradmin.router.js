@@ -12,4 +12,6 @@ module.exports = app => {
     app.post('/api/customer-admins', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.createCustomerAdmin);
     app.put('/api/customer-admins/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.updateCustomerAdmin);
     app.delete('/api/customer-admins/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin']), customersController.deleteCustomerAdmin);
+    app.put('/api/customer-admins/profile/:id', authenticateToken, authorizeRole(['Customer Admin', 'Super Admin','Customer User']), customersController.updateCustomerAdminProfile);
+
 }; 

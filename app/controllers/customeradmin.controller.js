@@ -340,5 +340,41 @@ module.exports = {
                 error: error.message
             });
         }
-    }
+    },
+    updateCustomerAdminProfile: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { organization_name, contact_person_name, email, contact_number, address, country_id, state_id, city_id, modified_by } = req.body;
+        
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: 'Customer admin ID is required'
+            });
+        }
+        const customerAdminData = { organization_name, contact_person_name, email, contact_number, address, country_id, state_id, city_id, modified_by };
+        customersModel.updateCustomerAdminProfile(id, customerAdminData, (error, result) => {
+            if (error) {
+                errorlog.error('Error updating customer admin profile:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error updating customer admin profile',
+                    error: error.message
+                });
+            }   
+        });
+        return res.status(200).json({
+            success: true,
+            message: 'Customer admin profile updated successfully'
+        });
+        } catch (error) {
+            errorlog.error('Exception in updateCustomerAdminProfile:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+                error: error.message
+            });
+        }
+    }   
+    
 }; 
